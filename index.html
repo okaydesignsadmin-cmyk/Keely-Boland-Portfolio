@@ -1,0 +1,2999 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Keely — Graphic Designer, Brisbane</title>
+  <meta name="description" content="Keely is a Brisbane-based graphic designer creating solution-led work across any style." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Fraunces:ital,wght@1,600&family=Space+Mono:wght@700&family=Syne:wght@800&family=Caveat:wght@700&family=Rubik+Mono+One&family=DM+Serif+Display:ital@1&family=Bungee&family=Pacifico&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ============ 1. DESIGN TOKENS — your palette ============ */
+    :root {
+      --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='a'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.15' numOctaves='2' seed='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 2.2 -1.25'/%3E%3C/filter%3E%3Cfilter id='b'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.15' numOctaves='2' seed='9' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .1  0 0 0 0 .18  0 0 0 0 .25  0 0 0 2.2 -1.3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url%28%23a%29'/%3E%3Crect width='100%25' height='100%25' filter='url%28%23b%29'/%3E%3C/svg%3E");   /* fine noise, like the portrait */
+      --paper:    #F4F0E7;   /* off-white, matches the portrait background */
+      --ink:      #2B2B2B;
+      --charcoal: #404040;
+      --muted:    #75706A;
+      --coral:    #EC7357;
+      --pink:     #E0B4CF;
+      --blue:     #5EA9C7;
+      --lime:     #C6F985;
+      --gum:      #5EA9C7;   /* bubblegum colour = the next page's background */
+      --gum-dark: #3C86A8;
+      --line:     rgba(43, 43, 43, 0.14);
+      --radius:   16px;
+      --gutter:   clamp(16px, 4vw, 48px);
+      --nav-h:    64px;
+      --pw: min(40vw, calc((100svh - var(--nav-h)) * 0.66), 520px);   /* portrait width */
+      --font-body: "Bricolage Grotesque", system-ui, sans-serif;
+    }
+
+    /* ============ 2. BASE ============ */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; overflow: hidden; }       /* the home page itself never scrolls */
+    body {
+      font-family: var(--font-body);
+      background: var(--paper);
+      color: var(--ink);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      overscroll-behavior: none;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    .wrap { padding: 0 var(--gutter); max-width: 1400px; margin: 0 auto; }
+    .label {
+      font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.12em;
+      color: var(--muted); font-weight: 600;
+    }
+
+    /* ============ 3. NAV ============ */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+      height: var(--nav-h);
+      background: color-mix(in srgb, var(--paper) 88%, transparent);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
+    }
+    nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 100%; }
+    .logo { font-weight: 800; font-size: 1.3rem; letter-spacing: -0.02em; white-space: nowrap; }
+    .logo span { color: var(--coral); }
+    .nav-links { display: flex; gap: 28px; list-style: none; font-weight: 600; }
+    .nav-links a { position: relative; }
+    .nav-links a::after {
+      content: ""; position: absolute; left: 0; bottom: -3px; height: 3px; width: 0;
+      background: var(--coral); border-radius: 3px; transition: width .25s ease;
+    }
+    .nav-links a:hover::after { width: 100%; }
+    .status { display: flex; align-items: center; gap: 8px; font-size: .85rem; color: var(--muted); }
+    .status::before {
+      content: ""; width: 9px; height: 9px; border-radius: 50%;
+      background: var(--lime); border: 2px solid var(--charcoal);
+    }
+
+    /* ============ 4. HOME — portrait, text and floating icons ============ */
+    .home {
+      position: fixed; left: 0; right: 0; top: var(--nav-h); bottom: 0;
+      overflow: hidden; background: var(--paper);
+      touch-action: none;
+    }
+    .icons { position: absolute; inset: 0; z-index: 1; }
+    .icon {
+      position: absolute; top: 0; left: 0;
+      will-change: transform;
+      user-select: none; -webkit-user-drag: none;
+      pointer-events: none;
+    }
+
+    .portrait {
+      position: absolute; z-index: 2;
+      left: 50%; top: 50%;
+      width: var(--pw);
+      aspect-ratio: 992 / 1058;
+      transform: translate(-50%, -50%);
+    }
+    .portrait > img { width: 100%; height: 100%; pointer-events: none; user-select: none; }
+
+    /* Eyes: the iris moves inside a mask shaped like the eye white */
+    .eye {
+      position: absolute;
+      -webkit-mask-size: 100% 100%; mask-size: 100% 100%;
+      -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+    }
+    .eye.left  { left: 31.452%; top: 54.82%; width: 12.5%; height: 4.537%;
+                 -webkit-mask-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHwAAAAwCAYAAADThB6pAAABGUlEQVR42u3cWQ7DMAhFUT/2v+d0CRnqAXiX70S1fMDGkVWNGnElHJNGwRDQXugC2ysJBLBXAghgL3yB7JUAAtkLX0B74QtkL3gB7QUvoL3gBbQXvID2ghfQXvABdou4ZmQG0A2rPcD2qvYA2wtdQHst7wG2V6UH2F7owXx4occoevuS+IYeT85uRN8ujv28ecRdG0/0Bge9+Yp+h8sS32z7jicPEX16tTegVHuDxjy+vkiUPIVxp80FelbVAl8Ie9YyDXoB6BX7MvDJsVc1YsAnhF7deYOeDHrXUQv4JNC7z9bAJ3E68TEF/IM+p7+egb/ZhH9xMkDOCu6GLpsfNUUXg+iPLgbUNyFEBnokSKk55FLDf0lSbv5+IskwOa4e2C4AAAAASUVORK5CYII="); mask-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHwAAAAwCAYAAADThB6pAAABGUlEQVR42u3cWQ7DMAhFUT/2v+d0CRnqAXiX70S1fMDGkVWNGnElHJNGwRDQXugC2ysJBLBXAghgL3yB7JUAAtkLX0B74QtkL3gB7QUvoL3gBbQXvID2ghfQXvABdou4ZmQG0A2rPcD2qvYA2wtdQHst7wG2V6UH2F7owXx4occoevuS+IYeT85uRN8ujv28ecRdG0/0Bge9+Yp+h8sS32z7jicPEX16tTegVHuDxjy+vkiUPIVxp80FelbVAl8Ie9YyDXoB6BX7MvDJsVc1YsAnhF7deYOeDHrXUQv4JNC7z9bAJ3E68TEF/IM+p7+egb/ZhH9xMkDOCu6GLpsfNUUXg+iPLgbUNyFEBnokSKk55FLDf0lSbv5+IskwOa4e2C4AAAAASUVORK5CYII="); }
+    .eye.right { left: 56.048%; top: 54.82%; width: 12.5%; height: 4.442%;
+                 -webkit-mask-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHwAAAAvCAYAAAAhBK7nAAABDUlEQVR42u3c2w6DIBBFUQ///8/0qUljTC8WW5i957GRgcxiUBPTbGtGvzB3tsIRoVn1jMismkZgVq0jMqv2EZiFH5FZ+BGZBR+hWfgRmgUfoVnwEZoFH6FZ8BGaBd/ELhV9RIcLXajbm9isbm9is9AjNuuIb2Kzuj1is6KJzQQXG3Ifb9aA99Bmd0OwX72HG8Ww7+CxJgzs/Q8e7YWhj450O7049tE9XPTC2M8u8HgvBv3uhcIXgf5kgOgFoM8MFH5x7DODRV8U+tskwi8GPSqZ8ItAj04q/OTQVyUXflLoqycRfjLoX00m/ATI/5q4i8xeRBeauxj/m426oEIbIC5q/U0Qd+H86H7U8RA3C0kuOoqKZ/gAAAAASUVORK5CYII="); mask-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHwAAAAvCAYAAAAhBK7nAAABDUlEQVR42u3c2w6DIBBFUQ///8/0qUljTC8WW5i957GRgcxiUBPTbGtGvzB3tsIRoVn1jMismkZgVq0jMqv2EZiFH5FZ+BGZBR+hWfgRmgUfoVnwEZoFH6FZ8BGaBd/ELhV9RIcLXajbm9isbm9is9AjNuuIb2Kzuj1is6KJzQQXG3Ifb9aA99Bmd0OwX72HG8Ww7+CxJgzs/Q8e7YWhj450O7049tE9XPTC2M8u8HgvBv3uhcIXgf5kgOgFoM8MFH5x7DODRV8U+tskwi8GPSqZ8ItAj04q/OTQVyUXflLoqycRfjLoX00m/ATI/5q4i8xeRBeauxj/m426oEIbIC5q/U0Qd+H86H7U8RA3C0kuOoqKZ/gAAAAASUVORK5CYII="); }
+    .iris {
+      position: absolute;
+      width: 45%; aspect-ratio: 1;
+      border-radius: 50%;
+      transform: translate(-50%, -50%) translate(var(--ox, 0px), var(--oy, 0px));
+      background: radial-gradient(circle, #171315 0 21%, #4a3c36 23.5%, #6c5a51 40%, #5d4c45 74%, #3a2f2b 92%);
+    }
+    .eye.left  .iris { left: 47.41%; top: 49.66%; }
+    .eye.right .iris { left: 50.6%;  top: 50.64%; }
+    .iris::after {
+      content: ""; position: absolute;
+      width: 18%; height: 18%; left: 54%; top: 23%;
+      border-radius: 50%; background: #fff;
+    }
+
+    /* Big lowercase hello text, framing the head */
+    .hi {
+      position: absolute; z-index: 3;
+      font-weight: 800; letter-spacing: -0.035em; line-height: 0.95;
+      font-size: clamp(2rem, 4.6vw, 4.8rem);
+      color: var(--ink);
+      pointer-events: none;
+    }
+    .hi-left  { right: calc(50% + var(--pw) / 2 + 2vw); top: 30%; text-align: right; max-width: 30vw; }
+    .hi-right { left:  calc(50% + var(--pw) / 2 + 4.5vw); top: 50%; text-align: left;  max-width: 30vw; }
+    .hi-right .blue { color: var(--blue); }
+    .hi-left .coral { color: var(--coral); }
+    .hi-scroll {
+      position: absolute; z-index: 3; left: 50%; bottom: 3.5%; transform: translateX(-50%);
+      font-weight: 600; white-space: nowrap;
+      font-size: clamp(1rem, 1.6vw, 1.3rem); color: var(--muted);
+      cursor: pointer; background: none; border: 0; font-family: inherit;
+    }
+    .hi-scroll span { display: inline-block; animation: bob 1.6s ease-in-out infinite; }
+    @keyframes bob { 50% { transform: translateY(5px); } }
+
+    /* ============ 5. BUBBLEGUM ============ */
+    /* The next page sits on top, clipped to a circle = the bubble. */
+    .page {
+      position: fixed; left: 0; right: 0; top: var(--nav-h); bottom: 0; z-index: 10;
+      overflow: hidden; overscroll-behavior: contain; scrollbar-gutter: stable;   /* scroll bar never shifts the page */
+      background: var(--paper);
+      clip-path: circle(0px at 50% 50%);
+      pointer-events: none;
+    }
+    .page:focus { outline: none; }
+    .page.open { overflow-y: auto; pointer-events: auto; clip-path: none !important; }
+    .page.open.locked { overflow-y: hidden; }   /* can't scroll on until the stickers are stuck */
+    .page-inner { opacity: 0; }
+    .page.open .page-inner { opacity: 1 !important; }
+
+    /* The bubble's shading: airbrushed highlights, darker rim and grain, like the portrait */
+    .shine {
+      position: fixed; left: 0; top: var(--nav-h); z-index: 11;
+      border-radius: 50%; pointer-events: none; opacity: 0;
+      will-change: transform, width, height;
+      background:
+        var(--grain) var(--gx, 0px) var(--gy, 0px) / 200px 200px,
+        radial-gradient(ellipse 22% 16% at 34% 28%, rgba(255,255,255,.85), rgba(255,255,255,0) 100%),
+        radial-gradient(ellipse 12% 8%  at 62% 22%, rgba(255,255,255,.5),  rgba(255,255,255,0) 100%),
+        radial-gradient(ellipse 40% 30% at 40% 35%, rgba(255,255,255,.28), rgba(255,255,255,0) 100%),
+        radial-gradient(circle at 42% 38%, var(--gum) 0 45%, var(--gum-dark) 92%, #2F6F8E 100%);
+    }
+
+    /* ============ 6. INSIDE THE BUBBLE (the next page) ============ */
+    .intro {
+      min-height: calc(100svh - var(--nav-h));
+      display: grid; place-items: center; text-align: center;
+      padding: clamp(48px, 8vw, 96px) 0;
+      background: var(--grain) 0 0 / 200px 200px, var(--gum);
+      color: var(--ink);
+    }
+    .intro .label { color: var(--paper); }
+    .intro h2 {
+      font-size: clamp(2.4rem, 7.5vw, 6.5rem);
+      line-height: 0.98; letter-spacing: -0.035em; font-weight: 800;
+      margin: 16px auto 0; max-width: none;
+    }
+    .shift {                      /* fixed-width slot so the headline doesn't jump as fonts swap */
+      display: inline-block; width: 2.55em; text-align: center; white-space: nowrap;
+      color: var(--paper); vertical-align: baseline;
+    }
+    .shift > span { display: inline-block; line-height: 0; }   /* the word can't change the line's height */
+    .intro p.lede { max-width: 52ch; margin: 32px auto 0; font-size: 1.15rem; color: #1F3A47; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 10px; margin-top: 28px;
+      background: var(--charcoal); color: var(--paper);
+      padding: 14px 24px; border-radius: 999px; font-weight: 600;
+      transition: background .2s ease, color .2s ease, transform .2s ease;
+    }
+    .btn:hover { background: var(--lime); color: var(--charcoal); transform: translateY(-2px); }
+    .featured-row {
+      display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 12px 40px;
+      margin-top: clamp(40px, 6vw, 72px); padding-top: 24px; border-top: 1px solid rgba(43,43,43,.18);
+    }
+    .featured-row .label { color: #1F3A47; }
+    .featured-row strong { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em; }
+
+    .kb-strip { border-block: 3px solid var(--charcoal); }     /* three rows of your KB pattern */
+    .kb-row {
+      height: 100px;
+      background: url(assets/kb-row-1.png) repeat-x 0 0 / auto 100%;
+      animation: slide 40s linear infinite;
+    }
+    .kb-row.r2 { background-image: url(assets/kb-row-2.png); animation-direction: reverse; }   /* middle row runs the other way */
+    @keyframes slide { to { background-position: -1000px 0; } }   /* 1000 = one tile width at 100px tall */
+
+    .section { padding: clamp(64px, 10vw, 128px) 0; }
+    .section.wrap { padding-inline: var(--gutter); }
+    .section-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 40px; gap: 16px; }
+    .section-head h2 { font-size: clamp(2rem, 5vw, 3.5rem); letter-spacing: -0.03em; line-height: 1; }
+    /* ---- Work categories ---- */
+    .cats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+    .cat {
+      position: relative; display: flex; flex-direction: column; justify-content: space-between;
+      aspect-ratio: 5 / 4; padding: clamp(20px, 3vw, 36px);
+      background: var(--c); color: var(--fg);
+      border: 3px solid var(--charcoal); border-radius: var(--radius);
+      font: inherit; text-align: left; cursor: pointer; overflow: hidden;
+      box-shadow: 0 6px 0 var(--charcoal);
+      transition: transform .25s cubic-bezier(.2,.8,.2,1), box-shadow .25s cubic-bezier(.2,.8,.2,1);
+    }
+    .cat:hover, .cat:focus-visible { transform: translateY(-6px) rotate(-1deg); box-shadow: 0 12px 0 var(--charcoal); outline: none; }
+    .cat:active { transform: translateY(2px); box-shadow: 0 2px 0 var(--charcoal); }
+    .cat-num { font-weight: 800; font-size: 1rem; opacity: .75; }
+    .cat-name {
+      font-weight: 800; letter-spacing: -0.04em; line-height: .9;
+      font-size: clamp(2.6rem, 7vw, 6rem);
+      color: var(--paper);
+      text-shadow: 3px 3px 0 var(--charcoal), -1px -1px 0 var(--charcoal), 1px -1px 0 var(--charcoal), -1px 1px 0 var(--charcoal), 1px 1px 0 var(--charcoal);
+      transition: transform .3s cubic-bezier(.2,.8,.2,1);
+    }
+    .cat:hover .cat-name { transform: translateX(6px); }
+    .cat-go { display: flex; justify-content: space-between; align-items: center; font-weight: 600; }
+    .cat-go span:last-child {
+      display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%;
+      background: var(--btn-bg, var(--charcoal)); color: var(--btn-fg, var(--paper)); font-size: 1.3rem;
+      transition: transform .3s cubic-bezier(.2,.8,.2,1);
+    }
+    .cat:hover .cat-go span:last-child { transform: rotate(-45deg); }
+
+    /* ---- A category's own page (opens over the site) ---- */
+    .cat-view {
+      position: fixed; left: 0; right: 0; top: var(--nav-h); bottom: 0; z-index: 30;
+      overflow-y: auto; overscroll-behavior: contain; background: var(--paper);
+      clip-path: circle(0px at var(--ox, 50%) var(--oy, 50%));
+      visibility: hidden; pointer-events: none;
+      transition: clip-path .65s cubic-bezier(.65,0,.25,1), visibility 0s linear .65s;
+    }
+    .cat-view.show {
+      clip-path: circle(150vmax at var(--ox, 50%) var(--oy, 50%));
+      visibility: visible; pointer-events: auto;
+      transition: clip-path .65s cubic-bezier(.65,0,.25,1), visibility 0s;
+    }
+    .cat-view:focus { outline: none; }
+    .cat-panel { display: none; }
+    .cat-panel.active { display: block; }
+    .cat-head { background: var(--c); color: var(--fg); padding: clamp(28px, 5vw, 64px) 0 clamp(36px, 6vw, 72px); border-bottom: 3px solid var(--charcoal); }
+    .cat-back {
+      display: inline-flex; align-items: center; gap: 8px; margin-bottom: clamp(24px, 4vw, 48px);
+      background: var(--paper); color: var(--ink); border: 2px solid var(--charcoal); border-radius: 999px;
+      padding: 10px 18px; font: inherit; font-weight: 600; cursor: pointer;
+      transition: transform .2s ease;
+    }
+    .cat-back:hover { transform: translateX(-4px); }
+    .cat-head .label { color: inherit; opacity: .75; }
+    .cat-head h2 {
+      font-weight: 800; letter-spacing: -0.045em; line-height: .9; margin-top: 10px;
+      font-size: clamp(3.2rem, 12vw, 10rem); color: var(--paper);
+      text-shadow: 4px 4px 0 var(--charcoal), -1.5px -1.5px 0 var(--charcoal), 1.5px -1.5px 0 var(--charcoal), -1.5px 1.5px 0 var(--charcoal), 1.5px 1.5px 0 var(--charcoal);
+      /* sticker look: white die-cut border + soft shadow, sitting slightly crooked */
+      display: inline-block; transform-origin: 40% 60%;
+      transform: rotate(var(--tr, -3deg));
+      filter: drop-shadow(5px 0 0 #fff) drop-shadow(-5px 0 0 #fff) drop-shadow(0 5px 0 #fff) drop-shadow(0 -5px 0 #fff)
+              drop-shadow(0 10px 14px rgba(0,0,0,.28));
+    }
+    .cat-head h2.slap { animation: title-slap .5s cubic-bezier(.2,.9,.3,1.25) both; animation-delay: 1s;   /* waits a second, then slaps on */ }
+    @keyframes title-slap {
+      0%   { opacity: 0; transform: rotate(calc(var(--tr, -3deg) + 16deg)) scale(1.8); }
+      55%  { opacity: 1; transform: rotate(calc(var(--tr, -3deg) - 2deg)) scale(.9); }
+      100% { opacity: 1; transform: rotate(var(--tr, -3deg)) scale(1); }
+    }
+    @media (prefers-reduced-motion: reduce) { .cat-head h2.slap { animation: none; } }
+    /* resume header: big spiky speech bubble beside the title */
+    .resume-head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: clamp(20px, 4vw, 56px); align-items: center; }
+    .spiky-bubble { position: relative; padding: 110px 20.5%; transform: rotate(2deg); margin-right: 12px; }
+    .spiky-bubble svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+    .sb-fill { fill: var(--lime); stroke: var(--charcoal); stroke-width: 6; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+    .sb-shadow { fill: var(--charcoal); transform: translate(10px, 12px); }
+    .cat-head .spiky-bubble p { position: relative; margin: 0; max-width: 46ch; font-size: clamp(.92rem, 1.15vw, 1.05rem); line-height: 1.5; font-weight: 600; color: var(--ink); text-align: center; }
+    @media (max-width: 1100px) { .resume-head { grid-template-columns: 1fr; } .spiky-bubble { max-width: 720px; } }
+    @media (max-width: 860px) {
+      .spiky-bubble { padding-inline: 19%; margin: 8px 12px 0 0; transform: rotate(1deg); }
+      .cat-head .spiky-bubble p { font-size: .84rem; line-height: 1.45; }
+    }
+    .cat-head p { max-width: 52ch; margin-top: 20px; font-size: 1.1rem; }
+    .gallery { columns: 3 260px; column-gap: 24px; padding-block: clamp(40px, 6vw, 80px); }
+    .piece { break-inside: avoid; margin: 0 0 24px; }
+    /* ---- Poster carousel: CircularCarousel (React Bits) ---- */
+    .poster-stage { padding-block: clamp(16px, 3vw, 40px) clamp(40px, 6vw, 72px); }
+    #posterCarousel { width: 100%; height: clamp(440px, 72vh, 660px); position: relative; color: var(--ink); }
+    .poster-hint { text-align: center; color: var(--muted); font-size: .9rem; margin-top: 8px; }
+
+    .circular-carousel {
+      --cc-fade: #000000; --cc-radius: 12px; --cc-inner: 0.4;
+      position: relative; width: 100%; height: 100%; overflow: hidden; outline: none;
+      touch-action: pan-y; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent;
+    }
+    .circular-carousel[data-axis='x'] { touch-action: pan-x; }
+    .circular-carousel[data-draggable] { cursor: grab; }
+    .circular-carousel[data-dragging] { cursor: grabbing; }
+    .circular-carousel:focus-visible { box-shadow: inset 0 0 0 2px rgba(128, 128, 140, 0.55); }
+    .circular-carousel__view { position: absolute; inset: 0; }
+    .circular-carousel[data-shape='wheel'] .circular-carousel__view {
+      -webkit-mask-image: linear-gradient(to bottom, transparent, #000 18%, #000 82%, transparent);
+      mask-image: linear-gradient(to bottom, transparent, #000 18%, #000 82%, transparent);
+    }
+    .circular-carousel[data-shape='panorama'] .circular-carousel__view {
+      -webkit-mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+      mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+    }
+    .circular-carousel__stage {
+      position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+      opacity: 0; transition: opacity 0.45s ease;
+    }
+    .circular-carousel[data-ready] .circular-carousel__stage { opacity: 1; }
+    .circular-carousel__camera, .circular-carousel__ring, .circular-carousel__card { width: 0; height: 0; transform-style: preserve-3d; }
+    .circular-carousel__camera { position: relative; }
+    .circular-carousel__ring, .circular-carousel__card { position: absolute; left: 0; top: 0; }
+    .circular-carousel__tile { position: absolute; outline: 1px solid transparent; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+    .circular-carousel__frame { position: absolute; left: 0; top: 0; width: 100%; overflow: hidden; }
+    .circular-carousel__photo {
+      position: absolute; display: block; max-width: none; object-fit: cover;
+      pointer-events: none; user-select: none; -webkit-user-drag: none;
+    }
+    .circular-carousel__shade, .circular-carousel__inner { position: absolute; inset: 0; pointer-events: none; }
+    .circular-carousel__shade { background: var(--cc-fade); opacity: var(--cc-depth, 0); }
+    .circular-carousel__inner { background: #000000; opacity: var(--cc-inner); }
+    .circular-carousel__caption {
+      position: absolute; left: 0; right: 0; bottom: 22px;
+      display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 0 16px;
+      color: inherit; text-align: center; pointer-events: none;
+      animation: circular-carousel-reveal 900ms ease both;
+    }
+    .circular-carousel__title {
+      display: flex; max-width: 100%; flex-direction: column; align-items: center;
+      font-size: 15px; font-weight: 500; line-height: 1.35;
+      animation: circular-carousel-title 520ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .circular-carousel__subtitle { font-weight: 400; opacity: 0.6; }
+    .circular-carousel__count { display: inline-flex; align-items: center; gap: 3px; font-size: 12px; font-variant-numeric: tabular-nums; line-height: 1; opacity: 0.5; }
+    .circular-carousel__slash { opacity: 0.6; }
+    .circular-carousel__digits { display: inline-flex; }
+    .circular-carousel__digit { display: inline-block; height: 1em; overflow: hidden; }
+    .circular-carousel__reel { display: flex; flex-direction: column; transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1); }
+    .circular-carousel__reel > span { height: 1em; }
+    .circular-carousel__live { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+    @keyframes circular-carousel-title { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes circular-carousel-reveal { from { opacity: 0; } to { opacity: 1; } }
+    @media (prefers-reduced-motion: reduce) {
+      .circular-carousel__stage, .circular-carousel__reel { transition: none; }
+      .circular-carousel__caption, .circular-carousel__title { animation: none; }
+    }
+    /* our captions a little bigger, in the site's type */
+    #posterCarousel .circular-carousel__title { font-size: 18px; font-weight: 700; letter-spacing: -0.01em; }
+    #posterCarousel .circular-carousel__count { font-size: 13px; }
+
+    /* ---- Poster opened big (lightbox) ---- */
+    .poster-view {
+      position: fixed; inset: 0; z-index: 100;
+      display: grid; place-items: center; padding: clamp(16px, 4vh, 40px) 16px;
+      background: rgba(43, 43, 43, 0); visibility: hidden; pointer-events: none;
+      transition: background .35s ease, visibility 0s linear .35s;
+    }
+    .poster-view.open { background: rgba(43, 43, 43, .88); visibility: visible; pointer-events: auto; transition: background .35s ease; }
+    .poster-view figure { display: flex; flex-direction: column; align-items: center; gap: 14px; max-height: 100%; margin: 0; }
+    .poster-view img {
+      display: block; max-width: min(92vw, 760px); max-height: calc(100svh - 150px);
+      width: auto; height: auto; border-radius: 10px; border: 3px solid var(--charcoal);
+      box-shadow: 0 24px 60px rgba(0,0,0,.45);
+      transform-origin: var(--fx, 50%) var(--fy, 50%);
+    }
+    .poster-view figcaption { color: var(--paper); text-align: center; line-height: 1.3; }
+    .poster-view figcaption strong { display: block; font-size: 1.25rem; font-weight: 800; letter-spacing: -0.02em; }
+    .poster-view figcaption span { opacity: .7; font-size: .95rem; }
+    .poster-close {
+      position: absolute; top: 16px; right: 16px; width: 48px; height: 48px; border-radius: 50%;
+      background: var(--paper); color: var(--ink); border: 2px solid var(--charcoal);
+      font: inherit; font-size: 1.4rem; font-weight: 700; cursor: pointer; transition: transform .2s ease;
+    }
+    .poster-close:hover { transform: rotate(90deg); }
+    .poster-nav {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      width: 48px; height: 48px; border-radius: 50%; border: 2px solid var(--charcoal);
+      background: var(--paper); color: var(--ink); font: inherit; font-size: 1.3rem; font-weight: 700; cursor: pointer;
+    }
+    .poster-nav.prev { left: 16px; } .poster-nav.next { right: 16px; }
+    @media (max-width: 600px) { .poster-nav { top: auto; bottom: 16px; transform: none; } }
+
+    /* ---- Icons that land after an explosion float behind the posters ---- */
+    .poster-float {
+      position: fixed; left: 0; right: 0; top: var(--nav-h); bottom: 0; z-index: 0;
+      pointer-events: none; overflow: hidden;
+    }
+    .poster-float img { position: absolute; left: 0; top: 0; will-change: transform; }
+    .cat-panel[data-cat="posters"] > :not(.poster-float) { position: relative; z-index: 1; }
+
+    /* ---- Icon explosion ---- */
+    .icon-burst { position: fixed; inset: 0; z-index: 110; pointer-events: none; overflow: hidden; }
+    .icon-burst img { position: absolute; left: 0; top: 0; will-change: transform, opacity; }
+
+    .piece img, .piece .ph {
+      display: block; width: 100%; border-radius: 12px; border: 3px solid var(--charcoal);
+    }
+    .piece .ph {
+      display: grid; place-items: center; text-align: center; padding: 16px;
+      background: repeating-linear-gradient(-45deg, transparent 0 12px, rgba(43,43,43,.05) 12px 24px), #EAE5DA;
+      color: var(--muted); font-weight: 600;
+    }
+    .resume { display: flex; flex-direction: column; align-items: center; gap: 8px; padding-block: clamp(40px, 6vw, 80px); }
+    .resume .ph, .resume img { width: min(620px, 100%); border-radius: 12px; border: 3px solid var(--charcoal); }
+    .resume .ph { display: grid; place-items: center; background: repeating-linear-gradient(-45deg, transparent 0 12px, rgba(43,43,43,.05) 12px 24px), #EAE5DA; color: var(--muted); font-weight: 600; }
+    /* ---- Resume room ---- */
+    .room-wrap { padding-block: clamp(24px, 4vw, 56px) clamp(40px, 6vw, 72px); }
+    .room { position: relative; width: min(1100px, 100%); margin: 0 auto; aspect-ratio: 16 / 5.6; }
+    .room-floor {
+      position: absolute; left: -4%; right: -4%; bottom: 0; height: 22%;
+      background: radial-gradient(60% 70% at 50% 40%, rgba(224,180,207,.55), transparent 70%),
+                  linear-gradient(#EDE6DA, #E6DDCF);
+      border-radius: 50% 50% 0 0 / 30% 30% 0 0;
+      -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+      mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+    }
+    .couch-wrap { position: absolute; left: 6%; bottom: 7%; width: 62%; aspect-ratio: 1000 / 470; }
+    .couch-wrap::after {               /* soft shadow on the floor */
+      content: ""; position: absolute; left: 6%; right: 6%; bottom: -4%; height: 10%;
+      background: radial-gradient(closest-side, rgba(43,43,43,.28), transparent); z-index: -1;
+    }
+    .couch { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .room-cat {                /* lying on the cushion; click for a sleepy wiggle + zzz */
+      position: absolute; left: 40%; bottom: 43%; width: 27%;
+      padding: 0; border: 0; background: none; cursor: pointer; transform-origin: 50% 100%;
+    }
+    .room-cat img { display: block; width: 100%; height: auto; }
+    .cat-tag {                 /* tiny prompt, same style as the "my resume" tag */
+      position: absolute; left: 4%; top: -14%; transform: rotate(-6deg);
+      background: var(--charcoal); color: var(--paper); font-weight: 700; font-size: clamp(.5rem, .75vw, .66rem);
+      padding: 3px 8px; border-radius: 999px; white-space: nowrap;
+      box-shadow: 0 0 0 2.5px #fff, 0 4px 10px rgba(0,0,0,.18);
+      animation: cat-tag-bob 2.6s ease-in-out infinite; transition: opacity .4s ease;
+    }
+    @keyframes cat-tag-bob { 50% { transform: rotate(-6deg) translateY(-3px); } }
+    .room-cat.patted .cat-tag { opacity: 0; }
+    .room-cat:focus-visible { outline: none; }
+    .room-cat.wiggle { animation: cat-stretch 1.4s ease-in-out; }
+    @keyframes cat-stretch {
+      0%   { transform: none; }
+      18%  { transform: scale(1.04, .95) rotate(-1.5deg); }
+      36%  { transform: scale(.98, 1.04) rotate(1deg); }
+      54%  { transform: scale(1.02, .98) rotate(-.6deg); }
+      72%  { transform: scale(1, 1.01); }
+      100% { transform: none; }
+    }
+    .zzz {
+      position: absolute; pointer-events: none; font-weight: 800; color: var(--paper);
+      -webkit-text-stroke: 2.5px var(--charcoal); paint-order: stroke fill;
+      text-shadow: 0 0 0 #fff;
+      animation: zzz-float 2.4s ease-out forwards;
+    }
+    @keyframes zzz-float {
+      0%   { opacity: 0; transform: translate(0, 0) rotate(-10deg) scale(.6); }
+      15%  { opacity: 1; }
+      100% { opacity: 0; transform: translate(var(--dx, 30px), -90px) rotate(12deg) scale(1.2); }
+    }
+    @media (prefers-reduced-motion: reduce) { .room-cat.wiggle, .cat-tag { animation: none; } }
+    .table-wrap { position: absolute; right: 12%; bottom: 7%; width: 15%; aspect-ratio: 300 / 330; }
+    .table-wrap::after {
+      content: ""; position: absolute; left: 10%; right: 10%; bottom: -3%; height: 8%;
+      background: radial-gradient(closest-side, rgba(43,43,43,.25), transparent); z-index: -1;
+    }
+    .side-table { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .books {
+      position: absolute; left: 12%; bottom: 87%; width: 76%; padding: 0; border: 0; background: none;
+      cursor: pointer; z-index: 2; transition: transform .25s cubic-bezier(.2,.8,.2,1);
+      animation: books-glow 2.2s ease-in-out infinite;
+    }
+    .books svg { display: block; width: 100%; height: auto; overflow: visible; }
+    .books .cover { fill: var(--bc); }
+    .books text { font: 800 26px/1 var(--font-body); letter-spacing: 2px; fill: #2B2B2B; }
+    .books:hover, .books:focus-visible { transform: translateY(-6px) rotate(-1.5deg); outline: none; animation-duration: 1.1s; }
+    @keyframes books-glow {
+      0%, 100% { filter: drop-shadow(0 0 0 rgba(198,249,133,0)) drop-shadow(0 0 0 rgba(255,255,255,0)); }
+      50%      { filter: drop-shadow(0 0 14px rgba(198,249,133,.95)) drop-shadow(0 0 28px rgba(255,255,255,.9)); }
+    }
+    .books-tag {
+      position: absolute; right: -24%; top: -30%; transform: rotate(6deg);
+      background: var(--charcoal); color: var(--paper); font-weight: 700; font-size: clamp(.55rem, .85vw, .72rem);
+      padding: 4px 9px; border-radius: 999px; white-space: nowrap;
+      box-shadow: 0 0 0 3px #fff, 0 6px 12px rgba(0,0,0,.2);
+      animation: tag-bob 2.2s ease-in-out infinite;
+    }
+    @keyframes tag-bob { 50% { transform: rotate(6deg) translateY(-4px); } }
+    .room-hint { text-align: center; color: var(--muted); font-weight: 600; margin-top: 8px; }
+    @media (prefers-reduced-motion: reduce) { .books, .books-tag { animation: none; } .books { filter: drop-shadow(0 0 12px rgba(198,249,133,.9)); } }
+
+    /* ---- Resume viewer (opens from the books) ---- */
+    .resume-view {
+      position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; padding: 16px;
+      background: rgba(43,43,43,0); visibility: hidden; pointer-events: none;
+      transition: background .35s ease, visibility 0s linear .35s;
+    }
+    .resume-view.open { background: rgba(43,43,43,.88); visibility: visible; pointer-events: auto; transition: background .35s ease; }
+    .resume-sheet {
+      display: flex; flex-direction: column; align-items: center; gap: 14px;
+      width: min(680px, 92vw); max-height: calc(100svh - 32px);
+    }
+    .resume-doc {               /* one long sheet you scroll through */
+      width: 100%; max-height: calc(100svh - 120px); overflow-y: auto; overscroll-behavior: contain;
+      border-radius: 8px; border: 3px solid var(--charcoal); background: #FAF3E2;
+      box-shadow: 0 24px 60px rgba(0,0,0,.45);
+    }
+    .resume-doc img { width: 100%; height: auto; display: block; }
+    .resume-view .btn { margin: 0; }
+    .resume-view .poster-close { position: absolute; top: 16px; right: 16px; }
+    /* ---- Projects: ScrollStack (React Bits) ---- */
+    .scroll-stack { position: relative; padding-block: clamp(32px, 5vw, 64px) 0; }
+    .scroll-stack__slot { position: sticky; }
+    .scroll-stack-card {
+      position: relative; box-sizing: border-box; width: 100%;
+      transform-origin: 50% 0; will-change: transform;
+    }
+    .scroll-stack-card__shade {
+      position: absolute; inset: 0; border-radius: inherit; background: #000;
+      opacity: var(--scroll-stack-dim, 0); pointer-events: none;
+    }
+    /* the project cards, in your style */
+    .proj-card {
+      display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: clamp(18px, 3vw, 40px); align-items: center;
+      min-height: clamp(320px, 62svh, 520px); padding: clamp(16px, 2.4vw, 28px);
+      background: var(--c); color: var(--ink); text-align: left; font: inherit; cursor: pointer;
+      border: 3px solid var(--charcoal); border-radius: 28px;
+      box-shadow: 0 -12px 40px -16px rgba(0,0,0,.35), 0 24px 48px -24px rgba(0,0,0,.4);
+    }
+    .proj-media { display: block; align-self: stretch; }
+    .proj-media img, .proj-media .ph {
+      width: 100%; height: 100%; max-height: calc(62svh - 40px); object-fit: cover; display: grid; place-items: center;
+      border-radius: 18px; border: 3px solid var(--charcoal); background: #EAE5DA; color: var(--muted); font-weight: 600;
+    }
+    .proj-text { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
+    .proj-text .label { color: var(--ink); opacity: .7; }
+    .proj-title {
+      font-weight: 800; letter-spacing: -0.04em; line-height: .92; font-size: clamp(2.4rem, 5.5vw, 4.6rem);
+      color: var(--paper);
+      text-shadow: 3px 3px 0 var(--charcoal), -1.5px -1.5px 0 var(--charcoal), 1.5px -1.5px 0 var(--charcoal), -1.5px 1.5px 0 var(--charcoal), 1.5px 1.5px 0 var(--charcoal);
+    }
+    .proj-sub { font-weight: 700; font-size: 1.1rem; }
+    .proj-blurb { max-width: 40ch; margin-top: 6px; }
+    .proj-more {
+      margin-top: 14px; padding: 10px 18px; border-radius: 999px; background: var(--charcoal); color: var(--paper); font-weight: 700;
+      transition: transform .2s ease, background .2s ease, color .2s ease;
+    }
+    .proj-card:hover .proj-more, .proj-card:focus-visible .proj-more { transform: translateX(4px); background: var(--paper); color: var(--ink); box-shadow: 0 0 0 2px var(--charcoal); }
+    .proj-card:focus-visible { outline: 3px solid var(--charcoal); outline-offset: 4px; }
+    @media (max-width: 760px) {
+      .proj-card { grid-template-columns: 1fr; min-height: 0; }
+      .proj-media img, .proj-media .ph { aspect-ratio: 4 / 3; height: auto; max-height: 34svh; }
+    }
+
+    /* ---- Project read-more page ---- */
+    .proj-view {
+      position: fixed; left: 0; right: 0; top: var(--nav-h); bottom: 0; z-index: 35; overflow-y: auto; overscroll-behavior: contain;
+      background: var(--paper); visibility: hidden; opacity: 0; transform: translateY(24px);
+      transition: opacity .35s ease, transform .45s cubic-bezier(.2,.8,.2,1), visibility 0s linear .45s;
+    }
+    .proj-view.open { visibility: visible; opacity: 1; transform: none; transition: opacity .35s ease, transform .45s cubic-bezier(.2,.8,.2,1); }
+    .proj-view:focus { outline: none; }
+    .proj-page { max-width: 980px; padding-block: clamp(24px, 4vw, 48px) clamp(64px, 8vw, 112px); }
+    .proj-page h2 { font-size: clamp(3rem, 9vw, 7rem); line-height: .9; letter-spacing: -0.045em; font-weight: 800; margin-top: 18px; }
+    .proj-page .proj-sub { margin: 10px 0 0; color: var(--muted); }
+    .proj-page .project-tags { margin: 18px 0 28px; }
+    .proj-page .proj-hero { width: 100%; height: auto; display: grid; place-items: center; border-radius: 18px; border: 3px solid var(--charcoal); margin-bottom: 28px; background: #EAE5DA; color: var(--muted); font-weight: 600; }
+    .proj-page p:not(.label):not(.proj-sub) { max-width: 62ch; font-size: 1.1rem; margin-bottom: 14px; }
+    .proj-note { color: var(--muted); font-style: italic; }
+    .proj-intro { display: block; width: 100%; height: auto; aspect-ratio: 2 / 1; object-fit: cover; border-radius: 18px; border: 3px solid var(--charcoal); background: #6ACBF1; margin-bottom: 28px; }
+    .proj-lede { font-size: clamp(1.1rem, 1.6vw, 1.3rem) !important; line-height: 1.55; max-width: 64ch !important; }
+    .proj-section { margin: clamp(40px, 6vw, 72px) 0; padding-top: clamp(24px, 3vw, 36px); border-top: 2px solid var(--line); }
+    .proj-section h3 { font-size: clamp(2rem, 4.5vw, 3.4rem); line-height: 1; letter-spacing: -0.035em; font-weight: 800; margin: 8px 0 22px; }
+    .proj-media-wide { display: block; width: 100%; height: auto; border-radius: 18px; border: 3px solid var(--charcoal); background: #3F69B4; margin-bottom: 22px; }
+    /* sticker sheets — a page you click to flip over */
+    .sticker-flip { display: block; width: 100%; padding: 0; border: 0; background: none; cursor: pointer; perspective: 2200px; margin-bottom: 14px; -webkit-tap-highlight-color: transparent; }
+    .sticker-flip-inner { position: relative; display: block; aspect-ratio: 1440 / 760; transform-style: preserve-3d; transition: transform .8s cubic-bezier(.45,.05,.25,1); }
+    .sticker-flip.flipped .sticker-flip-inner { transform: rotateY(-180deg); }
+    .sticker-flip-face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: 18px; border: 3px solid var(--charcoal); overflow: hidden; background: #fff; }
+    .sticker-flip-face img { display: block; width: 100%; height: 100%; object-fit: cover; }
+    .sticker-flip-face.back { transform: rotateY(180deg); }
+    .sticker-flip:hover .sticker-flip-inner { transform: rotateY(-6deg); }
+    .sticker-flip.flipped:hover .sticker-flip-inner { transform: rotateY(-174deg); }
+    .sticker-flip:focus-visible { outline: 3px solid var(--coral); outline-offset: 6px; border-radius: 20px; }
+    .proj-page p.flip-hint { max-width: none; }
+    .flip-hint { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 4px 16px; margin-bottom: 22px; font-weight: 600; font-size: .95rem; }
+    .flip-hint .which { color: var(--muted); font-weight: 500; }
+    .flip-hint span { white-space: nowrap; }
+    @media (prefers-reduced-motion: reduce) { .sticker-flip-inner { transition: none; } }
+    /* interactive activity book */
+    .proj-book-wrap { container-type: inline-size; margin-bottom: 22px; }
+    .proj-book { display: block; width: 100%; height: min(calc((100cqw - 32px) / 1.415 + 190px), max(400px, calc(100vh - 200px))); border: 3px solid var(--charcoal); border-radius: 18px; background: #EAE5DA; }
+    /* website */
+    .proj-site { display: flex; flex-direction: column; gap: 22px; margin-bottom: 22px; }
+    .proj-site video { margin-bottom: 0; background: #EAE5DA; }
+    .long-scroll { border: 3px solid var(--charcoal); border-radius: 18px; overflow: hidden; background: #393737; margin-top: 28px; }
+    .long-scroll img { display: block; width: 100%; height: auto; }
+    .long-scroll-divider { padding: 18px; text-align: center; background: var(--charcoal); color: var(--paper); font-weight: 700; letter-spacing: .14em; text-transform: uppercase; font-size: .85rem; }
+    .long-scroll-light { background: #fff; margin-top: 0; }
+    .proj-poster { display: block; width: min(100%, 560px); height: auto; margin-inline: auto; border-radius: 18px; border: 3px solid var(--charcoal); }
+    /* Dart Frog type tester */
+    @font-face { font-family: "Dart Frog"; src: url(assets/fonts/dartfrog.ttf) format("truetype"); font-display: swap; }
+    .type-tester { border: 3px solid var(--charcoal); border-radius: 18px; background: #fff; color: #111; overflow: hidden; transition: background .3s, color .3s; }
+    .type-tester.inverted { background: #111; color: #fff; }
+    .tt-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; padding: 14px 18px; border-bottom: 2px solid var(--charcoal); background: var(--paper); color: var(--ink); font-weight: 600; font-size: .9rem; }
+    .tt-bar label { display: flex; align-items: center; gap: 10px; }
+    .tt-bar input[type=range] { width: clamp(120px, 22vw, 220px); accent-color: var(--coral); }
+    .tt-btn { padding: 7px 14px; border-radius: 999px; border: 2px solid var(--charcoal); background: var(--paper); color: var(--ink); font: inherit; font-weight: 700; cursor: pointer; }
+    .tt-btn:hover { background: var(--lime); }
+    .tt-size { min-width: 4ch; font-variant-numeric: tabular-nums; }
+    .tt-input { display: block; width: 100%; min-height: 260px; padding: clamp(18px, 3vw, 36px); border: 0; outline: none; resize: vertical; background: transparent; color: inherit;
+      font-family: "Dart Frog", cursive; font-size: var(--tt, 88px); line-height: 1.15; text-transform: lowercase; caret-color: var(--coral); }
+    .tt-input::placeholder { color: inherit; opacity: .3; }
+    .tt-note { margin-top: 10px; color: var(--muted); font-size: .9rem !important; }
+    .process-gap { margin: clamp(110px, 16vw, 200px) 0; text-align: center; }
+    .process-gap span { display: inline-block; max-width: 16ch; margin: 0 auto; font-family: "Pacifico", cursive; font-weight: 400; font-size: clamp(2.2rem, 6vw, 4.2rem); line-height: 1.25; color: var(--coral); text-shadow: 3px 3px 0 var(--charcoal);
+      transform: rotate(var(--tr, -4deg)); transform-origin: 50% 60%; opacity: 0;
+      filter: drop-shadow(5px 0 0 #fff) drop-shadow(-5px 0 0 #fff) drop-shadow(0 5px 0 #fff) drop-shadow(0 -5px 0 #fff) drop-shadow(0 10px 14px rgba(0,0,0,.25)); }
+    .process-gap span.slap { animation: title-slap .5s cubic-bezier(.2,.9,.3,1.25) both; }
+    .process-gap span { position: relative; cursor: default; }
+    /* glossy shine that sweeps across the letters only */
+    .process-gap span::after {
+      content: attr(data-text); position: absolute; inset: 0; pointer-events: none;
+      font: inherit; line-height: inherit; text-shadow: none;
+      color: transparent; -webkit-text-fill-color: transparent;
+      background: linear-gradient(105deg, transparent 38%, rgba(255,255,255,.95) 47%, rgba(255,255,255,.95) 53%, transparent 62%) no-repeat;
+      background-size: 260% 100%; background-position: 160% 0;
+      -webkit-background-clip: text; background-clip: text;
+    }
+    .process-gap span.slap::after { animation: sticker-shine 1s ease .45s both; }
+    .process-gap span.slap:hover::after { animation: sticker-shine-hover .8s ease both; }
+    @keyframes sticker-shine { from { background-position: 160% 0; } to { background-position: -60% 0; } }
+    @keyframes sticker-shine-hover { from { background-position: 160% 0; } to { background-position: -60% 0; } }
+    @media (prefers-reduced-motion: reduce) { .process-gap span { opacity: 1; } .process-gap span.slap, .process-gap span.slap::after { animation: none; } }
+    .proj-section-process { margin-top: 0; }
+    .long-scroll-doc { margin-top: 0; }
+    .rm-gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: -6px 0 28px; align-items: stretch; }
+    .rm-gallery img { display: block; width: 100%; height: 100%; aspect-ratio: 1100 / 1300; object-fit: cover; border-radius: 18px; border: 3px solid var(--charcoal); }
+    @media (max-width: 640px) { .rm-gallery { grid-template-columns: 1fr; } }
+    .proj-link-center { display: flex; justify-content: center; margin-top: 8px; }
+    .proj-link-pulse { position: relative; animation: linkPulse 1.8s ease-in-out infinite; }
+    .proj-link-pulse::after { content: ""; position: absolute; inset: -3px; border-radius: 999px; border: 3px solid var(--lime); animation: linkRing 1.8s ease-out infinite; pointer-events: none; }
+    .proj-link-pulse:hover { animation-play-state: paused; }
+    @keyframes linkPulse { 0%, 100% { scale: 1; } 50% { scale: 1.06; } }
+    @keyframes linkRing { 0% { opacity: .9; inset: -3px; } 100% { opacity: 0; inset: -18px; } }
+    @media (prefers-reduced-motion: reduce) { .proj-link-pulse, .proj-link-pulse::after { animation: none; } }
+    .proj-link { display: inline-flex; align-items: center; gap: 10px; padding: 14px 24px; border-radius: 999px; border: 3px solid var(--charcoal); background: var(--lime); color: var(--ink); font-weight: 700; text-decoration: none; box-shadow: 0 4px 0 var(--charcoal); transition: transform .15s, box-shadow .15s; }
+    .proj-process { margin-top: 22px; }
+    .proj-link-alt { background: var(--pink); }
+    .proj-link:hover { transform: translateY(-2px); box-shadow: 0 6px 0 var(--charcoal); }
+    .proj-link:active { transform: translateY(2px); box-shadow: 0 2px 0 var(--charcoal); }
+    /* contextual mockups carousel */
+    .mock-track { display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; padding-bottom: 6px; scrollbar-width: none; cursor: grab; }
+    .mock-track::-webkit-scrollbar { display: none; }
+    .mock-track.dragging { cursor: grabbing; scroll-snap-type: none; scroll-behavior: auto; }
+    .mock-track:focus-visible { outline: 3px solid var(--coral); outline-offset: 4px; border-radius: 20px; }
+    .mock-slide { flex: 0 0 auto; margin: 0; scroll-snap-align: start; }
+    .mock-slide img { display: block; height: clamp(260px, 46vw, 460px); width: auto; max-width: 86vw; object-fit: cover; border-radius: 18px; border: 3px solid var(--charcoal); background: #EAE5DA; user-select: none; }
+    .mock-slide figcaption { margin-top: 10px; font-weight: 600; font-size: .95rem; }
+    .mock-controls { display: flex; align-items: center; gap: 16px; margin-top: 18px; }
+    .mock-btn { width: 52px; height: 52px; border-radius: 50%; border: 3px solid var(--charcoal); background: var(--paper); color: var(--ink); font-size: 1.3rem; font-weight: 700; cursor: pointer; box-shadow: 0 4px 0 var(--charcoal); transition: transform .15s, box-shadow .15s, opacity .2s; }
+    .mock-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 0 var(--charcoal); background: var(--lime); }
+    .mock-btn:active:not(:disabled) { transform: translateY(2px); box-shadow: 0 2px 0 var(--charcoal); }
+    .mock-btn:disabled { opacity: .35; cursor: default; }
+    .mock-count { font-weight: 700; min-width: 4.5ch; text-align: center; font-variant-numeric: tabular-nums; }
+    @media (prefers-reduced-motion: reduce) { .mock-track { scroll-behavior: auto; } }
+    .project-tags { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; }
+    .project-tags li { padding: 6px 12px; border-radius: 999px; border: 2px solid var(--charcoal); font-weight: 600; font-size: .85rem; background: var(--paper); }
+    .piece figcaption { display: flex; justify-content: space-between; gap: 12px; padding-top: 10px; font-size: .95rem; }
+    .piece figcaption span:last-child { color: var(--muted); }
+
+    /* ============ SELECTED WORK — hands holding a phone ============ */
+    .work-sec {
+      position: relative; overflow: hidden;
+      padding: clamp(64px, 9vw, 112px) 0 0;
+      background: var(--paper);
+    }
+    .work-sec .section-head { margin-bottom: 0; position: relative; z-index: 2; }
+    .hold {
+      position: relative; z-index: 1; width: min(1000px, 100%, calc((100svh - 160px) * 1.6)); margin: clamp(8px, 2vw, 24px) auto 0;   /* fits short screens too */
+      aspect-ratio: 1199 / 831; perspective: 1600px;
+    }
+    .hold-inner {
+      position: absolute; inset: 0; container-type: inline-size; pointer-events: none;   /* only the phone itself catches the mouse */
+      transform-origin: 50% 42.8%;
+      transform: translate(var(--zx, 0px), var(--zy, 0px)) rotateX(var(--tilt, 10deg)) scale(var(--zs, 1.15));
+      transition: transform .45s cubic-bezier(.65,0,.35,1);   /* one smooth ease in-out (no will-change, so it redraws sharp once zoomed) */
+    }
+    .hold.near { z-index: 40; }
+    /* the hands: hold the phone at rest, slide away when you hover */
+    .hand {
+      position: absolute; inset: 0; width: 100%; height: 100%; z-index: 3;
+      pointer-events: none; user-select: none;
+      transition: transform .45s cubic-bezier(.65,0,.35,1), opacity .3s cubic-bezier(.4,0,.2,1) .05s;
+    }
+    /* the hands zoom in with the phone while easing outward and fading away */
+    .hold.near .hand-l { transform: translate(-9%, 7%) rotate(-5deg); opacity: 0; }
+    .hold.near .hand-r { transform: translate(9%, 7%) rotate(5deg);  opacity: 0; }
+    .hold:not(.near) .hand { transition: transform .45s cubic-bezier(.65,0,.35,1), opacity .3s ease .15s; }
+    .phone {                  /* the phone: charcoal frame around the live home screen, lined up under the hands */
+      position: absolute; z-index: 2; pointer-events: auto;
+      left: 27.77%; top: 27.44%; width: 44.45%; height: 30.69%;
+      container-type: inline-size;
+      background: #241F21; border-radius: 2.49cqw; padding: .92cqw 1.51cqw .76cqw .76cqw;   /* sized from the hold's width */
+      box-shadow: 0 .9cqw 1.8cqw rgba(64, 40, 56, .25);
+    }
+    .phone::before {          /* side buttons */
+      content: ""; position: absolute; top: -.9cqw; left: 19%; width: 9%; height: 1.1cqw;
+      background: #241F21; border-radius: .6cqw .6cqw 0 0; box-shadow: 12cqw 0 0 #241F21;
+    }
+    .phone::after {           /* camera notch on the left edge */
+      content: ""; position: absolute; left: 1.2cqw; top: 46%; width: 2.2cqw; height: 5cqw;
+      transform: translateY(-50%); background: #241F21; border-radius: 0 2.5cqw 2.5cqw 0; z-index: 2;
+    }
+    .screen {
+      position: relative; width: 100%; height: 100%; overflow: hidden;
+      border-radius: 4.3cqw;
+      background:
+        url(assets/phone-grain.png) 0 0 / 22cqw 22cqw,   /* fixed grain that scales with the phone (no flicker) */
+        radial-gradient(60% 80% at 78% 85%, rgba(94,169,199,.9), transparent 70%),
+        radial-gradient(50% 70% at 15% 10%, rgba(224,180,207,.95), transparent 70%),
+        radial-gradient(40% 50% at 60% 30%, rgba(198,249,133,.55), transparent 70%),
+        var(--paper);
+      font-size: 2.4cqw; color: var(--ink);
+    }
+    .ph-status { position: absolute; left: 6%; right: 6%; top: 3.5%; display: flex; justify-content: space-between; align-items: center; font-weight: 700; font-size: 2.3cqw; }
+    .st-right { display: flex; gap: .5cqw; align-items: center; }
+    .st-right i { width: .7cqw; height: .7cqw; border-radius: 50%; background: var(--ink); }
+    .st-right b { width: 3.6cqw; height: 1.7cqw; border: .3cqw solid var(--ink); border-radius: .5cqw; margin-left: .6cqw; box-shadow: inset 2.2cqw 0 0 var(--ink); }
+
+    .app {
+      position: absolute; width: 10.5cqw; display: flex; flex-direction: column; align-items: center; gap: .9cqw;
+      background: none; border: 0; padding: 0; font: inherit; color: inherit;
+    }
+    .app em { font-style: normal; font-weight: 600; font-size: 2cqw; white-space: nowrap; text-shadow: 0 1px 0 rgba(255,255,255,.6); }
+    .app .tile {
+      display: block; width: 8cqw; aspect-ratio: 1; border-radius: 2.2cqw;
+      background: var(--t, var(--paper)); box-shadow: 0 .5cqw 1.2cqw rgba(43,43,43,.18), inset 0 0 0 .25cqw rgba(43,43,43,.85);
+      background-size: 70%; background-position: center; background-repeat: no-repeat;
+    }
+    .app.deco { pointer-events: none; }
+    .app.folder { width: 11.5cqw; cursor: pointer; }
+    .app.folder .tile {
+      width: 10cqw; border-radius: 2.6cqw; padding: 1.2cqw;
+      background: rgba(255,255,255,.55); backdrop-filter: blur(6px);
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1cqw;
+      transition: transform .25s cubic-bezier(.2,.8,.2,1), box-shadow .25s;
+    }
+    .app.folder .tile > span { border-radius: .9cqw; background: var(--c, var(--coral)); background-size: cover; background-position: center; box-shadow: inset 0 0 0 .2cqw rgba(43,43,43,.6); }
+    .app.folder em { font-size: 2.1cqw; font-weight: 700; }
+    .app.folder:hover .tile, .app.folder:focus-visible .tile { transform: translateY(-.8cqw) scale(1.08); box-shadow: 0 1.2cqw 2.4cqw rgba(43,43,43,.25), inset 0 0 0 .25cqw rgba(43,43,43,.85); }
+    .app.folder:focus-visible { outline: none; }
+    .dock {
+      position: absolute; left: 25%; right: 25%; bottom: 5%; height: 11cqw;
+      display: flex; justify-content: space-evenly; align-items: center;
+      background: rgba(255,255,255,.4); backdrop-filter: blur(6px); border-radius: 4cqw;
+    }
+    .dock .tile { width: 7cqw; aspect-ratio: 1; border-radius: 2cqw; background: var(--t); background-size: 70%; background-position: center; background-repeat: no-repeat; box-shadow: inset 0 0 0 .25cqw rgba(43,43,43,.85); }
+    .hold-hint { text-align: center; color: var(--muted); font-weight: 600; margin-top: 12px; position: relative; z-index: 2; }
+    @media (max-width: 860px) {
+    }
+    @media (prefers-reduced-motion: reduce) { .hold-inner { transition: none; } }
+
+    .approach { background: var(--charcoal); color: var(--paper); }
+
+    /* ---- Stickers that slap onto the blue page ---- */
+    .intro { position: relative; overflow: hidden; }
+    .intro > .wrap { position: relative; z-index: 2; pointer-events: none; }        /* let the mouse reach stickers… */
+    .intro > .wrap > :not(.featured-row), .featured-row > * { pointer-events: auto; } /* …but keep text & buttons usable */
+    .stickers { position: absolute; inset: 0; z-index: 1; }
+    .sticker {
+      position: absolute; top: 0; left: 0;
+      transform-origin: 50% 50%;
+      opacity: 0; user-select: none; -webkit-user-drag: none;
+      filter: drop-shadow(0 3px 0 rgba(0,0,0,.18)) drop-shadow(0 8px 14px rgba(0,0,0,.28));
+      transform: translate(var(--x), var(--y)) rotate(calc(var(--r) + 14deg)) scale(1.7);
+      transition: transform .18s ease;
+    }
+    .sticker img { display: block; width: 100%; height: auto; pointer-events: none; }
+    .sticker .gloss {                /* the shine, cut to the sticker's exact shape */
+      position: absolute; inset: 0; pointer-events: none;
+      -webkit-mask-size: 100% 100%; mask-size: 100% 100%;
+      -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+      background: linear-gradient(115deg, transparent 38%, rgba(255,255,255,.15) 44%, rgba(255,255,255,.85) 50%, rgba(255,255,255,.15) 56%, transparent 62%) no-repeat;
+      background-size: 300% 100%; background-position: 92% 0;
+    }
+    .sticker.settled:hover .gloss { animation: gloss .6s cubic-bezier(.4,0,.3,1); }
+    @keyframes gloss { from { background-position: 92% 0; } to { background-position: 8% 0; } }
+    .sticker.stuck {
+      animation: slap .42s cubic-bezier(.2,.9,.3,1.25) forwards;
+      animation-delay: var(--d);
+    }
+    .sticker.settled { animation: none; opacity: 1; transform: translate(var(--x), var(--y)) rotate(var(--r)); }
+    .sticker.settled:hover { transform: translate(var(--x), var(--y)) rotate(calc(var(--r) - 5deg)) scale(1.1); }
+    @keyframes slap {
+      0%   { opacity: 0; transform: translate(var(--x), var(--y)) rotate(calc(var(--r) + 14deg)) scale(1.7); }
+      55%  { opacity: 1; transform: translate(var(--x), var(--y)) rotate(calc(var(--r) - 2deg)) scale(0.92); }
+      100% { opacity: 1; transform: translate(var(--x), var(--y)) rotate(var(--r)) scale(1); }
+    }
+    .approach .label { color: #B9B3AA; }
+    .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-top: 40px; }
+    @media (max-width: 1000px) { .steps { grid-template-columns: repeat(2, 1fr); } }
+    /* ribbon title */
+    .ribbon { overflow: hidden; padding-top: clamp(28px, 5vw, 64px); }
+    .ribbon svg { display: block; width: 100%; height: clamp(170px, 21vw, 300px); overflow: visible; }
+    .ribbon path { fill: none; }
+    .ribbon-band { fill: none; stroke: var(--lime); stroke-width: 62; stroke-linecap: butt; }
+    .ribbon-shadow { fill: none; stroke: #232323; stroke-width: 62; transform: translate(0, 8px); }
+    .ribbon-text { font-family: "Bricolage Grotesque", sans-serif; font-weight: 800; font-size: 30px; letter-spacing: .04em; text-transform: uppercase; fill: var(--ink); }
+    @media (max-width: 700px) { .ribbon svg { height: 150px; } }
+    /* double diamond */
+    .section.approach-body { padding-top: clamp(24px, 4vw, 48px); }
+    .dd { max-width: 980px; margin: 0 auto; }
+    .dd svg { display: block; width: 100%; height: auto; overflow: visible; }
+    .dd-q { stroke: none; }
+    .q1 { fill: var(--coral); } .q2 { fill: var(--pink); } .q3 { fill: var(--blue); } .q4 { fill: var(--lime); }
+    .dd-line { fill: none; stroke: var(--paper); stroke-width: 4; stroke-linejoin: round; }
+    .dd-dash { stroke: var(--charcoal); stroke-width: 3; stroke-dasharray: 8 8; opacity: .55; }
+    .dd-label { font-family: "Bricolage Grotesque", sans-serif; font-weight: 800; font-size: 30px; fill: var(--ink); text-anchor: middle; }
+    .dd-dot { fill: var(--paper); stroke: var(--charcoal); stroke-width: 4; }
+    .dd-pin { font-size: 22px; font-weight: 700; fill: var(--paper); text-anchor: middle; }
+    @media (max-width: 600px) { .dd-label { font-size: 38px; } .dd-pin { font-size: 30px; } }
+    .step { border-top: 1px solid rgba(244,240,231,.2); padding-top: 20px; }
+    .step .num { color: var(--lime); font-weight: 800; }
+    .step h3 { font-size: 1.5rem; margin: 8px 0; letter-spacing: -0.02em; }
+    .step p { color: #B9B3AA; }
+
+    .contact h2 { font-size: clamp(2.4rem, 7vw, 6rem); line-height: 1; letter-spacing: -0.035em; max-width: 14ch; margin-top: 16px; }
+    .contact a.email {
+      display: inline-block; margin-top: 32px;
+      font-size: clamp(1.25rem, 3vw, 2rem); font-weight: 600;
+      border-bottom: 4px solid var(--coral); padding-bottom: 4px;
+    }
+    .contact-sub { margin-top: 18px; font-size: 1.15rem; color: var(--muted); }
+    .contact-pills { list-style: none; display: flex; flex-wrap: wrap; gap: 14px 12px; margin-top: 28px; max-width: 900px; }
+    .pill {
+      display: inline-flex; align-items: center; gap: 10px; padding: 12px 20px 12px 12px; border-radius: 999px;
+      background: var(--pc); color: var(--ink); border: 2px solid var(--charcoal); font: inherit; font-weight: 600; font-size: clamp(.98rem, 1.6vw, 1.1rem);
+      box-shadow: 0 4px 0 var(--charcoal); transform: rotate(var(--r, 0deg)); transition: transform .2s cubic-bezier(.2,.9,.3,1.3), box-shadow .2s; cursor: default;
+    }
+    a.pill, button.pill { cursor: pointer; }
+    a.pill:hover, button.pill:hover { transform: rotate(0deg) translateY(-3px) scale(1.03); box-shadow: 0 7px 0 var(--charcoal); }
+    .pill-k { padding: 5px 10px; border-radius: 999px; background: var(--charcoal); color: var(--paper); font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; font-weight: 700; }
+    .contact .pill.email { display: inline-flex; border-bottom: 2px solid var(--charcoal); padding-bottom: 12px; margin-top: 0; font-size: clamp(.98rem, 1.6vw, 1.1rem); }
+    footer { border-top: 1px solid var(--line); }
+    footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; padding-block: 24px; color: var(--muted); font-size: .9rem; }
+    footer ul { display: flex; gap: 20px; list-style: none; }
+    footer a:hover { color: var(--ink); }
+
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
+    .reveal.in { opacity: 1; transform: none; }
+    .reveal-t { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .65s cubic-bezier(.2,.8,.2,1); }
+    .reveal-t.in { opacity: 1; transform: none; }
+    /* project pages: text rises out from behind an invisible line (half-reveal wipe) */
+    #projBody .reveal-t {
+      opacity: 1; transform: translateY(.5em);
+      -webkit-mask-image: linear-gradient(to bottom, #000 50%, transparent 50%); mask-image: linear-gradient(to bottom, #000 50%, transparent 50%);
+      -webkit-mask-size: 100% 200%; mask-size: 100% 200%; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+      -webkit-mask-position: 0 100%; mask-position: 0 100%;
+      transition: -webkit-mask-position .9s cubic-bezier(.2,.8,.2,1), mask-position .9s cubic-bezier(.2,.8,.2,1), transform .9s cubic-bezier(.2,.8,.2,1);
+    }
+    #projBody .reveal-t.in { transform: none; -webkit-mask-position: 0 0; mask-position: 0 0; }
+
+    /* ============ 7. RESPONSIVE ============ */
+    @media (max-width: 860px) {
+      :root { --pw: min(70vw, calc((100svh - var(--nav-h)) * 0.5)); }
+      .cats { grid-template-columns: 1fr; }
+      #posterCarousel { height: clamp(340px, 52vh, 480px); }
+      .cat { aspect-ratio: 16 / 10; }
+      .steps { grid-template-columns: 1fr; }
+      .status { display: none; }
+      .portrait { top: 54%; }
+      .hi { font-size: clamp(1.9rem, 8.5vw, 3rem); max-width: none; left: 0; right: 0; text-align: center; }
+      .hi-left  { top: 4%; }
+      .hi-right { top: calc(4% + 1em); }
+      .kb-row { height: 64px; }
+      @keyframes slide { to { background-position: -640px 0; } }
+    }
+    @media (max-width: 520px) { .nav-links { gap: 12px; font-size: .9rem; } .logo { font-size: 1rem; } }
+    @media (prefers-reduced-motion: reduce) {
+      .kb-row, .hi-scroll span { animation: none; }
+      .reveal { opacity: 1; transform: none; transition: none; }
+      .reveal-t, #projBody .reveal-t { opacity: 1; transform: none; transition: none; -webkit-mask-image: none; mask-image: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="wrap">
+      <a href="#home" class="logo" id="logo">Keely Boland&rsquo;s Portfolio</a>
+      <span class="status">Available for freelance</span>
+      <ul class="nav-links">
+        <li><a href="#work" data-go="work">Work</a></li>
+        <li><a href="#approach" data-go="approach">About</a></li>
+        <li><a href="#contact" data-go="contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ===================== HOME ===================== -->
+  <main class="home" id="home">
+    <div class="icons" id="icons" aria-hidden="true"></div>
+
+    <div class="portrait" id="portrait">
+      <img src="assets/portrait.webp" alt="Illustrated self-portrait of Keely with lime-green hair, hair clips and silver hoop earrings" />
+      <div class="eye left"><div class="iris"></div></div>
+      <div class="eye right"><div class="iris"></div></div>
+    </div>
+
+    <h1 class="hi hi-left">Hi, I'm <span class="coral">Keely,</span></h1>
+    <p class="hi hi-right">A Junior Graphic <span class="blue">Designer</span></p>
+    <button class="hi-scroll" id="scrollCue">scroll to find out more <span>↓</span></button>
+  </main>
+
+  <!-- The bubble's shading (sits over the page while it's being blown) -->
+  <div class="shine" id="shine" aria-hidden="true"></div>
+
+  <!-- ===================== INSIDE THE BUBBLE: the rest of the site ===================== -->
+  <div class="page" id="page" tabindex="-1">
+    <div class="page-inner" id="pageInner">
+
+      <section class="intro" id="intro">
+        <div class="stickers" id="stickers" aria-hidden="true"></div>
+        <div class="wrap">
+          <p class="label">Nice to meet you</p>
+          <h2>Solution first.<br><span class="shift" id="shift"><span>Style</span></span> second.</h2>
+          <p class="lede">I am an emerging designer that designs with a solution-based approach first, which allows myself to adapt my visual language to each brief, moving confidently between typography, branding, UX/UI, data visualisation and print.</p>
+          <a href="#work" class="btn" data-go="work">See selected work →</a>
+        </div>
+      </section>
+
+      <div class="kb-strip" role="img" aria-label="Pattern of K and B letterforms">
+        <div class="kb-row r1"></div><div class="kb-row r2"></div>
+      </div>
+
+      <section class="work-sec" id="work">
+        <div class="wrap section-head">
+          <h2>Browse some of my work</h2>
+          <span class="label">2025 — 2026</span>
+        </div>
+
+        <p class="hold-hint">pick a folder</p>
+
+        <!-- Hands holding a phone. Hover (or tap) the phone to bring it closer, then pick a folder. -->
+        <div class="hold" id="hold">
+          <div class="hold-inner">
+
+            <img class="hand hand-l" src="assets/hand-left.webp" alt="" aria-hidden="true">
+            <img class="hand hand-r" src="assets/hand-right.webp" alt="" aria-hidden="true">
+            <div class="phone">
+              <div class="screen" id="phoneScreen">
+                <div class="ph-status"><span>9:41</span><span class="st-right"><i></i><i></i><i></i><b></b></span></div>
+                <div class="app deco" style="left: 3%;  top: 14%;"><span class="tile" style="--t: var(--coral)"></span><em>Photos</em></div>
+                <div class="app deco" style="left: 12.5%; top: 14%;"><span class="tile" style="--t: var(--charcoal)"></span><em>Music</em></div>
+                <div class="app deco" style="left: 76%; top: 15%;"><span class="tile" style="--t: var(--lime)"></span><em>Notes</em></div>
+                <div class="app deco" style="left: 86%; top: 15%;"><span class="tile" style="--t: var(--pink)"></span><em>Camera</em></div>
+
+                <button class="app folder" data-cat="projects" style="left: 30.75%; top: 19%;"><span class="tile"></span><em>Projects</em></button>
+                <button class="app folder" data-cat="posters"  style="left: 42.25%; top: 19%;"><span class="tile"></span><em>Posters</em></button>
+                <button class="app folder" data-cat="resume"   style="left: 53.75%; top: 19%;"><span class="tile"></span><em>Resume</em></button>
+
+                <div class="dock">
+                  <span class="tile" style="--t: var(--blue)"></span><span class="tile" style="--t: var(--coral)"></span>
+                  <span class="tile" style="--t: var(--paper)"></span><span class="tile" style="--t: var(--lime)"></span>
+                  <span class="tile" style="--t: var(--charcoal)"></span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <section class="approach" id="approach">
+        <!-- ribbon title: "how I work" runs along a looping ribbon -->
+        <div class="ribbon" aria-label="How I work">
+          <svg viewBox="0 0 1440 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <path id="ribbonPath" d="M -80 120 C 160 40, 360 220, 620 170 C 800 135, 900 70, 980 130 C 1050 185, 990 270, 920 240 C 840 205, 900 90, 1040 95 C 1190 100, 1260 200, 1520 150"/>
+            <use href="#ribbonPath" class="ribbon-shadow"/>
+            <use href="#ribbonPath" class="ribbon-band"/>
+            <text class="ribbon-text" dy="0.36em"><textPath href="#ribbonPath" id="ribbonText" startOffset="0"></textPath></text>
+          </svg>
+        </div>
+        <div class="section wrap approach-body">
+          <div class="dd reveal" role="img" aria-label="Double diamond design process: Discover and Define narrow the problem into a brief; Develop and Deliver grow ideas into a solution">
+            <svg viewBox="-70 0 1140 400" aria-hidden="true">
+              <polygon class="dd-q q1" points="40,200 270,30 270,370"/>
+              <polygon class="dd-q q2" points="270,30 500,200 270,370"/>
+              <polygon class="dd-q q3" points="500,200 730,30 730,370"/>
+              <polygon class="dd-q q4" points="730,30 960,200 730,370"/>
+              <polygon class="dd-line" points="40,200 270,30 500,200 270,370"/>
+              <polygon class="dd-line" points="500,200 730,30 960,200 730,370"/>
+              <line class="dd-dash" x1="270" y1="30" x2="270" y2="370"/>
+              <line class="dd-dash" x1="730" y1="30" x2="730" y2="370"/>
+              <text class="dd-label" x="190" y="208">Discover</text>
+              <text class="dd-label" x="350" y="208">Define</text>
+              <text class="dd-label" x="650" y="208">Develop</text>
+              <text class="dd-label" x="810" y="208">Deliver</text>
+              <circle class="dd-dot" cx="40" cy="200" r="11"/><circle class="dd-dot" cx="500" cy="200" r="11"/><circle class="dd-dot" cx="960" cy="200" r="11"/>
+              <text class="dd-pin" x="40" y="250">Problem</text>
+              <text class="dd-pin" x="500" y="250">Brief</text>
+              <text class="dd-pin" x="960" y="250">Solution</text>
+            </svg>
+          </div>
+          <div class="steps">
+            <div class="step reveal"><span class="num">01 · Discover</span><h3>Look around</h3><p>Research who it's for, what already exists, and what actually needs to change.</p></div>
+            <div class="step reveal"><span class="num">02 · Define</span><h3>Pin it down</h3><p>Narrow everything I've found into a clear brief and the real problem worth solving.</p></div>
+            <div class="step reveal"><span class="num">03 · Develop</span><h3>Explore widely</h3><p>Test directions across styles, mediums and tones instead of defaulting to a signature look.</p></div>
+            <div class="step reveal"><span class="num">04 · Deliver</span><h3>Make it work</h3><p>Refine the direction that solves the brief best, and build it to hold up in the real world.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section wrap contact" id="contact">
+        <p class="label">Contact</p>
+        <h2>Got a problem worth designing for?</h2>
+        <p class="contact-sub">Say hi, no pressure. Here's where to find me:</p>
+        <ul class="contact-pills">
+          <li><a class="pill email" href="mailto:keels.0406@gmail.com" style="--pc: var(--coral); --r: -2deg"><span class="pill-k">Email</span> keels.0406@gmail.com</a></li>
+          <li><a class="pill" href="https://www.behance.net/keelyboland1" data-behance target="_blank" rel="noopener" style="--pc: var(--blue); --r: 1.5deg"><span class="pill-k">Behance</span> See more of my work &#8599;</a></li>
+          <li><a class="pill" href="https://www.instagram.com/okaydesignss_/" target="_blank" rel="noopener" style="--pc: var(--paper); --r: -2.5deg"><span class="pill-k">Instagram</span> @okaydesignss_ &#8599;</a></li>
+          <li><span class="pill" style="--pc: var(--lime); --r: -1deg"><span class="pill-k">Based in</span> Brisbane, Australia</span></li>
+          <li><span class="pill" style="--pc: var(--pink); --r: 2deg"><span class="pill-k">Open to</span> freelance &amp; agency roles</span></li>
+          <li><button class="pill" type="button" data-copy="keels.0406@gmail.com" style="--pc: #fff; --r: -1.5deg"><span class="pill-k">Copy</span> <span class="copy-label">my email</span></button></li>
+        </ul>
+      </section>
+
+      <footer>
+        <div class="wrap">
+          <span>© <span id="year"></span> Keely. Brisbane, Australia.</span>
+          <span>Developed with Claude Code</span>
+          <ul>
+            <li><a href="https://www.instagram.com/okaydesignss_/" target="_blank" rel="noopener">Instagram</a></li>
+            <li><a href="https://www.behance.net/keelyboland1" data-behance target="_blank" rel="noopener">Behance</a></li>
+            <li><a href="#">LinkedIn</a></li>
+          </ul>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+
+  <!-- ===================== CATEGORY PAGES =====================
+       To add a piece: copy a <figure class="piece"> block and swap the
+       <div class="ph" ...>…</div> for <img src="your-image.jpg" alt="Describe the piece">  -->
+  <!-- Poster opened big -->
+  <div class="poster-view" id="posterView" role="dialog" aria-modal="true" aria-label="Poster" aria-hidden="true">
+    <button class="poster-close" id="posterClose" aria-label="Close">✕</button>
+    <button class="poster-nav prev" id="posterPrev" aria-label="Previous poster">←</button>
+    <button class="poster-nav next" id="posterNext" aria-label="Next poster">→</button>
+    <figure>
+      <img id="posterBig" alt="">
+      <figcaption><strong id="posterTitle"></strong><span id="posterSub"></span></figcaption>
+    </figure>
+  </div>
+  <div class="icon-burst" id="iconBurst" aria-hidden="true"></div>
+
+  <!-- Project "read more" page -->
+  <div class="proj-view" id="projView" role="dialog" aria-modal="true" aria-label="Project" aria-hidden="true" tabindex="-1">
+    <div class="wrap proj-page">
+      <button class="cat-back" id="projBack">← All projects</button>
+      <div id="projBody"></div>
+    </div>
+  </div>
+
+  <!-- Resume viewer: swap the placeholder for <img src="assets/resume/resume.jpg" alt="Keely Boland resume">
+       or <iframe src="assets/resume/resume.pdf" title="Keely Boland resume"></iframe>, and point the button at the PDF -->
+  <div class="resume-view" id="resumeView" role="dialog" aria-modal="true" aria-label="Resume" aria-hidden="true">
+    <button class="poster-close" id="resumeClose" aria-label="Close">✕</button>
+    <div class="resume-sheet">
+      <div class="resume-doc">
+        <img src="assets/resume/resume-long.jpg" alt="Keely Boland resume: work experience at Queensland Art Gallery and Gallery of Modern Art, Broken Hearts Burger Club and Target Carindale; education at QUT; skills, qualifications, references and availability">
+      </div>
+      <a class="btn" href="assets/resume/keely-boland-resume.pdf" download="Keely-Boland-Resume.pdf">Download resume (PDF) ↓</a>
+    </div>
+  </div>
+
+  <div class="cat-view" id="catView" tabindex="-1" aria-hidden="true">
+    <!-- ===== Posters ===== -->
+    <section class="cat-panel" data-cat="posters">
+      <div class="poster-float" id="posterFloat" aria-hidden="true"></div>
+      <header class="cat-head" style="--c: var(--coral); --fg: var(--ink);">
+        <div class="wrap">
+          <button class="cat-back">← All work</button>
+          <p class="label">Selected work · 02</p>
+          <h2>Posters</h2>
+          <p>Posters are my thing! Have a browse.</p>
+        </div>
+      </header>
+      <!-- Poster carousel: CircularCarousel (React Bits), rebuilt in plain JS. Edit the POSTERS list in the script below. -->
+      <div class="wrap poster-stage">
+        <div id="posterCarousel"></div>
+        <p class="poster-hint">Drag or swipe to spin · click a poster to bring it to the front</p>
+      </div>
+    </section>
+    <!-- ===== Projects ===== -->
+    <section class="cat-panel" data-cat="projects">
+      <header class="cat-head" style="--c: var(--charcoal); --fg: var(--paper);">
+        <div class="wrap">
+          <button class="cat-back">← All work</button>
+          <p class="label">Selected work · 01</p>
+          <h2>Projects</h2>
+          <p>A selection of my best work.</p>
+        </div>
+      </header>
+      <!-- Projects stack (ScrollStack, React Bits, rebuilt in plain JS). Each card opens its full write-up.
+           To add a project: copy a .scroll-stack-card block AND its matching <template> further down. -->
+      <div class="wrap scroll-stack" id="projStack">
+        <div class="scroll-stack__inner">
+
+          <button class="scroll-stack-card proj-card" data-project="bloom" style="--c: #6ACBF1;">
+            <span class="proj-media"><img src="assets/projects/bloom-card.jpg" alt="BLOOM, a garden guide to childhood cancer: pink bubbly logo surrounded by colourful flowers, stars and squiggles on sky blue" loading="lazy"></span>
+            <span class="proj-text">
+              <span class="label">Project · 01</span>
+              <span class="proj-title">BLOOM</span>
+              <span class="proj-sub">A Garden Guide to Childhood Cancer</span>
+              <span class="proj-blurb">A garden-themed initiative helping kids in cancer treatment understand and talk about their feelings.</span>
+              <span class="proj-more">Read more →</span>
+            </span>
+          </button>
+
+          <button class="scroll-stack-card proj-card" data-project="zine" style="--c: var(--pink);">
+            <span class="proj-media"><img src="assets/projects/zine-card.jpg" alt="Franklin Gothic zine spread: a contents page with CONTENTS set in a circle around a large C, opposite Franklin Gothic is so universal even punks use it inside an ornate blue frame" loading="lazy"></span>
+            <span class="proj-text">
+              <span class="label">Project · 02</span>
+              <span class="proj-title">Franklin Gothic</span>
+              <span class="proj-sub">Bold Against Noise, a typographic zine</span>
+              <span class="proj-blurb">A zine on how an American print typeface became a staple of grunge and punk.</span>
+              <span class="proj-more">Read more →</span>
+            </span>
+          </button>
+
+          <button class="scroll-stack-card proj-card" data-project="p3" style="--c: var(--coral);">
+            <span class="proj-media"><img src="assets/projects/dartfrog-mockup.jpg" alt="Dart Frog typeface posters pasted on a street wall: two black and white frog pattern posters reading unleash your pattern, and a full alphabet specimen" loading="lazy"></span>
+            <span class="proj-text">
+              <span class="label">Project · 03</span>
+              <span class="proj-title">Dart Frog</span>
+              <span class="proj-sub">An original typeface</span>
+              <span class="proj-blurb">A typeface inspired by the patterns of poison dart frogs, made for World Science Festival Brisbane.</span>
+              <span class="proj-more">Read more →</span>
+            </span>
+          </button>
+
+          <button class="scroll-stack-card proj-card" data-project="rhythmixed" style="--c: #F26A2B;">
+            <span class="proj-media"><img src="assets/projects/rhythmixed-cover.jpg" alt="Rhythmixed logo suite over a warm, blurred dance floor: the dancing-legs R in a white circle, the app tile with wordmark, and rm. monograms in white, orange and pale green" loading="lazy"></span>
+            <span class="proj-text">
+              <span class="label">Project · 04</span>
+              <span class="proj-title">Rhythmixed</span>
+              <span class="proj-sub">Branding &middot; by dancers, for dancers</span>
+              <span class="proj-blurb">A bold, energetic identity for a dance brand, built around an R that dances.</span>
+              <span class="proj-more">Read more →</span>
+            </span>
+          </button>
+
+          <button class="scroll-stack-card proj-card" data-project="p2" style="--c: var(--lime);">
+            <span class="proj-media"><img src="assets/projects/dwarf-card.jpg" alt="Meet Earth's Mini Neighbours infographic: title over a glowing sun, with Ceres and Earth plotted by distance from the Sun" loading="lazy"></span>
+            <span class="proj-text">
+              <span class="label">Project · 05</span>
+              <span class="proj-title">Meet Earth&rsquo;s Mini Neighbours</span>
+              <span class="proj-sub">Dwarf planets infographic</span>
+              <span class="proj-blurb">An infographic comparing the dwarf planets with Earth, with the design document behind it.</span>
+              <span class="proj-more">Read more →</span>
+            </span>
+          </button>
+
+
+
+
+        </div>
+      </div>
+
+      <!-- Full write-ups shown when a card is clicked -->
+      <template id="proj-bloom">
+        <!-- intro animation: plays from the start each time the project opens, then rests on the logo -->
+        <video class="proj-intro" data-end="assets/projects/bloom-intro-end.jpg"
+               muted playsinline preload="auto" aria-label="Animated BLOOM logo assembling from colourful garden shapes">
+          <source src="assets/projects/bloom-intro.webm" type="video/webm">
+          <source src="assets/projects/bloom-intro.mp4" type="video/mp4">
+        </video>
+        <p class="label">Project · 01</p>
+        <h2>BLOOM</h2>
+        <p class="proj-sub">A Garden Guide to Childhood Cancer</p>
+        <ul class="project-tags"><li>Illustration</li><li>Character design</li><li>Information design</li><li>Editorial</li><li>Packaging</li></ul>
+        <p class="proj-lede">BLOOM is an initiative hospitals can integrate into existing systems, transforming the juice cartons nurses hand out at meals, chemotherapy sessions and appointments into an educational tool for children with cancer. Each lid carries a collectable character sticker that gradually builds into a personalised activity book. With current resources designed for adults, BLOOM uses child-centred information design to reduce fear, spark conversations between children, families and carers, and provide comfort.</p>
+        <div class="proj-process">
+          <a class="proj-link proj-link-alt" href="https://new.express.adobe.com/webpage/Pezs9wAN0qHZr" target="_blank" rel="noopener">See my design process &#8599;</a>
+        </div>
+
+        <section class="proj-section">
+          <p class="label">Primary product</p>
+          <h3>Stickers for Juice Cups</h3>
+          <video class="proj-media-wide" poster="assets/projects/bloom-juice-cups.jpg"
+                 autoplay muted loop playsinline aria-label="Row of juice cups, each lid topped with a different Bloom Buddy or Brave Buddy character sticker">
+            <source src="assets/projects/bloom-juice-cups.webm" type="video/webm">
+            <source src="assets/projects/bloom-juice-cups.mp4" type="video/mp4">
+          </video>
+          <p>Every juice cup given during treatment at hospital comes topped with a surprise Bloom Buddy or Brave Buddy sticker. Kids peel it off and stick it into their BLOOM activity book, collecting the whole garden one juice at a time. It turns a small everyday moment into something fun to look forward to. Through familiar, playful visual communication, this touchpoint supports children's wellbeing by bringing moments of joy, routine and connection into an otherwise clinical and uncertain hospital day.</p>
+        </section>
+
+        <section class="proj-section">
+          <p class="label">Collectables</p>
+          <h3>Sticker Collection</h3>
+          <button class="sticker-flip" type="button" aria-label="Flip the sticker page to see the other set">
+            <span class="sticker-flip-inner">
+              <span class="sticker-flip-face front"><img src="assets/projects/bloom-stickers-brave.jpg" alt="Brave Buddies sticker sheet: twelve bug characters, including a caterpillar, dragonfly, snail, ladybug, bee, grasshopper and beetles, on a yellow background"></span>
+              <span class="sticker-flip-face back"><img src="assets/projects/bloom-stickers-bloom.jpg" alt="Bloom Buddies sticker sheet: twelve flower characters with faces, in yellow, blue, pink, orange, green and purple, on a yellow background"></span>
+            </span>
+          </button>
+          <p class="flip-hint"><span>&#8635; Click the page to flip it</span><span class="which" aria-live="polite">Brave Buddies &middot; 1 of 2</span></p>
+        </section>
+
+        <section class="proj-section">
+          <p class="label">Activity book</p>
+          <h3>Filled-out Activity Book</h3>
+          <div class="proj-book-wrap">
+            <iframe class="proj-book" src="assets/projects/bloom-flipbook.html" title="BLOOM interactive activity book prototype" loading="lazy"></iframe>
+          </div>
+          <p>Click a page to turn it, or use the arrows. The back cover even lets you write your name in.</p>
+        </section>
+
+        <section class="proj-section">
+          <p class="label">Website</p>
+          <h3>Bloom Buddy Garden</h3>
+          <div class="proj-site">
+            <video class="proj-media-wide" poster="assets/projects/bloom-site-walkthrough.jpg" autoplay muted loop playsinline aria-label="Screen recording walking through the Bloom Buddy Garden website">
+              <source src="assets/projects/bloom-site-walkthrough.webm" type="video/webm">
+              <source src="assets/projects/bloom-site-walkthrough.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="proj-link-center">
+            <a class="proj-link proj-link-pulse" href="https://bloominitiative.github.io/Bloom-Buddy-Garden/" target="_blank" rel="noopener">Visit the Bloom Buddy Garden &#8599;</a>
+          </div>
+        </section>
+
+        <section class="proj-section">
+          <p class="label">In the world</p>
+          <h3>Contextual Mockups</h3>
+          <div class="mock-carousel">
+            <div class="mock-track" tabindex="0" aria-label="BLOOM contextual mockups, scroll or use the arrows">
+              <figure class="mock-slide"><img src="assets/projects/bloom-mock-lunchbox.jpg" alt="An orange lunchbox decorated with Brave Buddy and Bloom Buddy stickers, held by a child" loading="lazy" draggable="false"><figcaption>Lunchbox</figcaption></figure>
+              <figure class="mock-slide"><img src="assets/projects/bloom-mock-suitcase.jpg" alt="A blue suitcase with Bloom Buddy stickers, one peeling at the corner" loading="lazy" draggable="false"><figcaption>Suitcase</figcaption></figure>
+              <figure class="mock-slide"><img src="assets/projects/bloom-mock-bottles.jpg" alt="Two kids drink bottles covered in Brave Buddy and Bloom Buddy stickers" loading="lazy" draggable="false"><figcaption>Drink bottles</figcaption></figure>
+              <figure class="mock-slide"><img src="assets/projects/bloom-mock-bag.jpg" alt="A cream drawstring bag printed with the BLOOM logo and character faces" loading="lazy" draggable="false"><figcaption>Drawstring bag</figcaption></figure>
+              <figure class="mock-slide"><img src="assets/projects/bloom-mock-books.jpg" alt="Three BLOOM activity books, "A garden guide to childhood cancer", fanned on yellow" loading="lazy" draggable="false"><figcaption>Activity books</figcaption></figure>
+              <figure class="mock-slide"><img src="assets/projects/bloom-mock-colouring.jpg" alt="A child colouring in a BLOOM character page with pencils" loading="lazy" draggable="false"><figcaption>Colouring page</figcaption></figure>
+              <figure class="mock-slide"><img src="assets/projects/bloom-mock-plush.jpg" alt="Three plush Bloom Buddy flower keyrings on ball chains" loading="lazy" draggable="false"><figcaption>Plush keyrings</figcaption></figure>
+              <figure class="mock-slide"><img src="assets/projects/bloom-mock-scrubs.jpg" alt="Nurse scrubs printed with the colourful BLOOM shape pattern" loading="lazy" draggable="false"><figcaption>Nurse scrubs</figcaption></figure>
+              <figure class="mock-slide"><img src="assets/projects/bloom-mock-tablet.jpg" alt="The Bloom Buddy Garden website on a blue kids tablet, showing the How are you growing today? sprout screen" loading="lazy" draggable="false"><figcaption>Tablet</figcaption></figure>
+            </div>
+            <div class="mock-controls">
+              <button class="mock-btn" type="button" data-dir="-1" aria-label="Previous mockup">&larr;</button>
+              <span class="mock-count" aria-live="polite">1 / 9</span>
+              <button class="mock-btn" type="button" data-dir="1" aria-label="Next mockup">&rarr;</button>
+            </div>
+          </div>
+        </section>
+
+      </template>
+      <template id="proj-p2">
+        <p class="label">Project · 05</p><h2>Meet Earth&rsquo;s Mini Neighbours</h2><p class="proj-sub">Dwarf planets infographic &middot; DVB302</p>
+        <ul class="project-tags"><li>Information design</li><li>Data visualisation</li><li>Infographic</li></ul>
+        <p class="proj-lede">The commonly forgotten dwarf planets are here to reclaim their spot in the solar system. This infographic compares Ceres, Pluto, Haumea, Makemake and Eris with Earth by distance from the Sun, orbit, characteristics and gravity, followed by the design document explaining the choices behind it.</p>
+        <div class="long-scroll">
+          <img src="assets/projects/dwarf-infographic.jpg" alt="Meet Earth's Mini Neighbours: a long infographic charting the dwarf planets and Earth by distance from the Sun, orbital comparison, characteristic comparison and gravitational comparison" loading="lazy" width="1395" height="5577">
+        </div>
+        <div class="process-gap"><span data-text="Watch out, here comes my process documentation">Watch out, here comes my process documentation</span></div>
+        <div class="long-scroll long-scroll-doc">
+            <img src="assets/projects/dwarf-doc-long.jpg" alt="DVB302 design document as one long page: technical design analysis of each infographic design, information principles analysis, context review and data appendix" loading="lazy" width="1000" height="21405">
+        </div>
+      </template>
+      <template id="proj-rhythmixed">
+        <p class="label">Project · 04</p><h2>Rhythmixed</h2><p class="proj-sub">Branding &middot; by dancers, for dancers</p>
+        <ul class="project-tags"><li>Branding</li><li>Logo design</li><li>Visual identity</li></ul>
+        <img class="proj-media-wide" src="assets/projects/rhythmixed-banner.jpg" alt="Rhythmixed banner: a motion-blurred silhouette walking across an orange wall, with the rm. monogram and by dancers, for dancers" width="1600" height="1000">
+        <div class="rm-gallery">
+          <img src="assets/projects/rhythmixed-poster.jpg" alt="Rhythmixed poster: a dancer in black arching backwards against a red and orange backdrop, with the white rhythmixed. wordmark" width="1100" height="1439">
+          <img src="assets/projects/rhythmixed-logo.jpg" alt="Rhythmixed logo tile: the dancing-legs R and wordmark cut out of a white rounded square, showing a warm dance-floor photo through it" width="1100" height="1229">
+        </div>
+        <p class="proj-lede">When creating the logo, I wanted to play with the R in &lsquo;rhythmixed&rsquo;. The letter R has so much movement, it reminds me of a dancer. I wanted the logo to have dynamism, appear modern but also signify the brand&rsquo;s purpose. With these boundaries in mind I created an &lsquo;R&rsquo; that looks like two legs dancing and a beamed music note, an immediate link to what the brand is about that will be highly recognisable.</p>
+        <p>The &lsquo;RM&rsquo; and &lsquo;rhythmixed&rsquo; logos use Tango Sans to keep them simple yet bold. The brand needed a bright colour to push it further: orange was picked because it symbolises energy, creativity, warmth, enthusiasm and transformation, bridging physical vitality with emotional balance. It&rsquo;s universal and pairs with lighter greens, whites or blacks.</p>
+        <div class="long-scroll" style="background:#fff">
+          <img src="assets/projects/rhythmixed-board.jpg" alt="Rhythmixed brand board: hero banner, logo lockups, rm. monograms in orange and pale green, app icons over a dance-floor photo, the rhythmixed.co wordmark, and the design rationale" loading="lazy" width="2468" height="4130">
+        </div>
+      </template>
+      <template id="proj-p3">
+        <p class="label">Project · 03</p><h2>Dart Frog</h2><p class="proj-sub">An original typeface &middot; DVB201</p>
+        <ul class="project-tags"><li>Type design</li><li>Lettering</li><li>Poster</li></ul>
+        <p class="proj-lede">Dart Frog is an original typeface designed from first concept through to a working font file, poster and design documentation, responding to World Science Festival Brisbane. Poison dart frogs use bold colour and pattern to signal that they are toxic, and every species carries its own. Those patterns shaped the fluid, dripping letterforms, with the poster inviting you to &ldquo;unleash your pattern&rdquo;.</p>
+        <img class="proj-media-wide" src="assets/projects/dartfrog-mockup.jpg" alt="Dart Frog posters pasted on a street wall as a person walks past: frog pattern posters reading unleash your pattern, and a full alphabet specimen" loading="lazy">
+
+        <section class="proj-section">
+          <p class="label">Poster</p>
+          <h3>Unleash Your Pattern</h3>
+          <img class="proj-poster" src="assets/projects/dartfrog-poster.jpg" alt="Dart Frog poster: a symmetrical black and white frog pattern with the words unleash your pattern and dart frog set in the typeface" loading="lazy" width="1199" height="1696">
+        </section>
+
+                <section class="proj-section">
+          <p class="label">Try it</p>
+          <h3>Test Out the Typeface</h3>
+          <div class="type-tester">
+            <div class="tt-bar">
+              <label>Size <input type="range" class="tt-range" min="28" max="200" value="88" aria-label="Font size"> <span class="tt-size">88px</span></label>
+              <button type="button" class="tt-btn tt-invert">Invert colours</button>
+              <button type="button" class="tt-btn tt-reset">Reset</button>
+            </div>
+            <textarea class="tt-input" spellcheck="false" aria-label="Type here to try the Dart Frog typeface" placeholder="type anything...">unleash your pattern</textarea>
+          </div>
+          <p class="tt-note">Dart Frog has lowercase letters, numbers and ! ? &amp; , so anything you type in capitals shows in lowercase.</p>
+        </section>
+
+<div class="process-gap"><span data-text="Watch out, here comes my process documentation">Watch out, here comes my process documentation</span></div>
+        <section class="proj-section proj-section-process">
+          <p class="label">Process</p>
+          <h3>Design Process Document</h3>
+          <div class="long-scroll long-scroll-light">
+            <img src="assets/projects/dartfrog-doc-01.jpg" alt="Dart Frog design process document, page 1 of 17" loading="lazy" width="1406" height="994">
+            <img src="assets/projects/dartfrog-doc-02.jpg" alt="Dart Frog design process document, page 2 of 17" loading="lazy" width="1406" height="994">
+            <img src="assets/projects/dartfrog-doc-03.jpg" alt="Dart Frog design process document, page 3 of 17" loading="lazy" width="1406" height="994">
+            <img src="assets/projects/dartfrog-doc-04.jpg" alt="Dart Frog design process document, page 4 of 17" loading="lazy" width="1406" height="994">
+            <img src="assets/projects/dartfrog-doc-05.jpg" alt="Dart Frog design process document, page 5 of 17" loading="lazy" width="1406" height="994">
+            <img src="assets/projects/dartfrog-doc-06.jpg" alt="Dart Frog design process document, page 6 of 17" loading="lazy" width="1406" height="994">
+            <img src="assets/projects/dartfrog-doc-07.jpg" alt="Dart Frog design process document, page 7 of 17" loading="lazy" width="1406" height="994">
+            <img src="assets/projects/dartfrog-doc-08.jpg" alt="Dart Frog design process document, page 8 of 17" loading="lazy" width="1406" height="994">
+            <img src="assets/projects/dartfrog-doc-09.jpg" alt="Dart Frog design process document, page 9 of 17" loading="lazy" width="1406" height="994">
+            <img src="assets/projects/dartfrog-doc-10.jpg" alt="Dart Frog design process document, page 10 of 17" loading="lazy" width="1406" height="994">
+            <img src="assets/projects/dartfrog-doc-11.jpg" alt="Dart Frog design process document, page 11 of 17" loading="lazy" width="1406" height="994">
+            <img src="assets/projects/dartfrog-doc-12.jpg" alt="Dart Frog design process document, page 12 of 17" loading="lazy" width="1406" height="994">
+            <img src="assets/projects/dartfrog-doc-13.jpg" alt="Dart Frog design process document, page 13 of 17" loading="lazy" width="1406" height="994">
+            <img src="assets/projects/dartfrog-doc-14.jpg" alt="Dart Frog design process document, page 14 of 17" loading="lazy" width="1406" height="994">
+            <img src="assets/projects/dartfrog-doc-15.jpg" alt="Dart Frog design process document, page 15 of 17" loading="lazy" width="1406" height="994">
+            <img src="assets/projects/dartfrog-doc-16.jpg" alt="Dart Frog design process document, page 16 of 17" loading="lazy" width="1406" height="994">
+            <img src="assets/projects/dartfrog-doc-17.jpg" alt="Dart Frog design process document, page 17 of 17" loading="lazy" width="1406" height="994">
+          </div>
+        </section>
+      </template>
+      <template id="proj-zine">
+        <p class="label">Project · 02</p><h2>Franklin Gothic</h2><p class="proj-sub">Bold Against Noise &middot; a typographic zine</p>
+        <ul class="project-tags"><li>Editorial</li><li>Typography</li><li>Zine</li></ul>
+        <p class="proj-lede">A typographic zine showing how Franklin Gothic, a typeface developed in twentieth-century America, became so culturally universal that it is now prolific in grunge and punk visual language. Duotone navy and off-white, distressed textures and bleeding effects reference 90s grunge media, while the hierarchy relies solely on Franklin Gothic&rsquo;s own weight system.</p>
+
+        <section class="proj-section">
+          <p class="label">Flip through</p>
+          <h3>The Zine</h3>
+          <div class="proj-book-wrap">
+            <iframe class="proj-book" src="assets/projects/zine-flipbook.html" title="Franklin Gothic zine, interactive flipbook" loading="lazy"></iframe>
+          </div>
+          <p>Click a page to turn it, or use the arrows.</p>
+        </section>
+
+        <div class="process-gap"><span data-text="Watch out, here comes my process documentation">Watch out, here comes my process documentation</span></div>
+        <div class="long-scroll long-scroll-doc">
+          <img src="assets/projects/zine-process-long.jpg" alt="Process documentation for the Franklin Gothic zine: grunge typeface discovery, zine layout inspiration, colour palette and design principles notes, initial sketching, layout sketches, InDesign grids, initial print, mockups and reflection" loading="lazy" width="1400" height="12106">
+        </div>
+      </template>
+    </section>
+    <!-- ===== Resume ===== -->
+    <section class="cat-panel" data-cat="resume">
+      <header class="cat-head" style="--c: var(--pink); --fg: var(--ink);">
+        <div class="wrap">
+          <button class="cat-back">← All work</button>
+          <div class="resume-head">
+            <div>
+              <p class="label">Selected work · 03</p>
+              <h2>Resume</h2>
+              <p>Take a Seat, Years of hospitality experience ahead.</p>
+            </div>
+            <div class="spiky-bubble">
+              <svg viewBox="0 0 1000 700" preserveAspectRatio="none" aria-hidden="true"><polygon class="sb-shadow" points="500,19 537,74 589,18 608,85 674,37 679,99 746,73 745,124 814,109 799,160 873,153 836,205 928,201 886,246 951,260 892,299 982,319 916,350 980,381 896,402 975,444 868,450 939,503 841,497 875,548 793,536 820,595 749,580 748,629 682,605 675,665 610,620 588,680 536,625 500,676 463,627 411,683 389,621 329,659 318,605 248,634 258,573 171,602 197,543 123,549 154,500 70,500 113,455 32,443 106,401 8,382 104,350 24,319 95,297 48,260 122,248 82,205 152,199 111,145 199,158 169,97 258,127 244,62 318,95 326,36 389,78 410,14 462,61"/><polygon class="sb-fill" points="500,19 537,74 589,18 608,85 674,37 679,99 746,73 745,124 814,109 799,160 873,153 836,205 928,201 886,246 951,260 892,299 982,319 916,350 980,381 896,402 975,444 868,450 939,503 841,497 875,548 793,536 820,595 749,580 748,629 682,605 675,665 610,620 588,680 536,625 500,676 463,627 411,683 389,621 329,659 318,605 248,634 258,573 171,602 197,543 123,549 154,500 70,500 113,455 32,443 106,401 8,382 104,350 24,319 95,297 48,260 122,248 82,205 152,199 111,145 199,158 169,97 258,127 244,62 318,95 326,36 389,78 410,14 462,61"/></svg>
+              <p>Launching into my design career, I completed an internship with Beinc where I gained hands&#8209;on studio experience across branding, digital design, and creative development. Alongside this, I&rsquo;ve spent the past two years freelancing in branding and graphic design, building a strong foundation in visual communication and delivering work for a range of clients. Together, these experiences have shaped my confidence as a designer and strengthened my ability to produce thoughtful, contemporary design outcomes.</p>
+            </div>
+          </div>
+        </div>
+      </header>
+      <!-- Resume room: couch + cat, side table, and a glowing stack of books that opens the resume -->
+      <div class="wrap room-wrap">
+        <div class="room" id="room">
+          <div class="room-floor"></div>
+          <div class="couch-wrap">
+            <img class="couch" src="assets/resume/couch.webp" alt="Pink mid-century couch">
+            <button class="room-cat" id="roomCat" aria-label="Pat the sleepy cat"><img src="assets/resume/cat.webp" alt="Blue cat lying on its back on the couch"><span class="cat-tag" aria-hidden="true">pat the cat</span></button>
+          </div>
+          <div class="table-wrap">
+            <button class="books" id="books" aria-label="Open Keely's resume">
+              <svg viewBox="0 0 460 290" aria-hidden="true">
+                <defs>
+                  <filter id="bookGrain" x="0" y="0" width="100%" height="100%">
+                    <feTurbulence type="fractalNoise" baseFrequency="1.3" numOctaves="2" seed="4" result="n"/>
+                    <feColorMatrix in="n" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 2.2 -1.3" result="lite"/>
+                    <feColorMatrix in="n" type="matrix" values="0 0 0 0 .15  0 0 0 0 .1  0 0 0 0 .15  0 0 0 -2.2 .9" result="dk"/>
+                    <feComposite in="lite" in2="SourceAlpha" operator="in" result="l2"/>
+                    <feComposite in="dk" in2="SourceAlpha" operator="in" result="d2"/>
+                    <feMerge><feMergeNode in="SourceGraphic"/><feMergeNode in="d2"/><feMergeNode in="l2"/></feMerge>
+                  </filter>
+                  <!-- one book lying flat: pages on the left, rounded spine on the right -->
+                  <g id="bk">
+                    <path class="cover" d="M0 0 H330 a32 32 0 0 1 0 64 H0 Z"/>
+                    <path d="M6 9 H190 a23 23 0 0 1 0 46 H6 a12 23 0 0 0 0 -46 Z" fill="#F6F2EA" stroke="#2B2B2B" stroke-width="4"/>
+                    <path d="M40 24 H170 M60 34 H150 M48 44 H160" stroke="#2B2B2B" stroke-width="3" stroke-linecap="round"/>
+                    <path class="spine" d="M330 0 a32 32 0 0 1 0 64" fill="none" stroke="#2B2B2B" stroke-width="4"/>
+                    <path d="M0 0 H330 a32 32 0 0 1 0 64 H0" fill="none" stroke="#2B2B2B" stroke-width="5" stroke-linejoin="round"/>
+                    <text x="282" y="41" text-anchor="middle">RESUME</text>
+                  </g>
+                </defs>
+                <g filter="url(#bookGrain)">
+                  <use href="#bk" x="40"  y="206" style="--bc: var(--pink)"/>
+                  <use href="#bk" x="18"  y="138" style="--bc: var(--blue)"/>
+                  <use href="#bk" x="58"  y="70"  style="--bc: var(--lime)"/>
+                  <use href="#bk" x="30"  y="2"   style="--bc: var(--coral)"/>
+                  <!-- sticky notes peeking out -->
+                  <path d="M150 132 h46 v42 l-10 10 h-36 z" fill="#C6F985" stroke="#2B2B2B" stroke-width="4" stroke-linejoin="round"/>
+                  <path d="M160 148 h26 M160 158 h20" stroke="#2B2B2B" stroke-width="3" stroke-linecap="round"/>
+                  <path d="M120 266 h44 v20 h-44 z" fill="#E0B4CF" stroke="#2B2B2B" stroke-width="4" stroke-linejoin="round"/>
+                </g>
+              </svg>
+              <span class="books-tag">my resume ↓</span>
+            </button>
+            <img class="side-table" src="assets/resume/table.webp" alt="">
+          </div>
+        </div>
+        <p class="room-hint">click the books to open my resume</p>
+      </div>
+    </section>
+  </div>
+
+  <script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const clamp01 = v => Math.min(1, Math.max(0, v));
+  const smooth = (a, b, v) => { const x = clamp01((v - a) / (b - a)); return x * x * (3 - 2 * x); };
+
+  /* ================================================================
+     FLOATING ICONS — [file number, width, height]
+     Remove numbers from this list to hide an icon.
+     ================================================================ */
+  const ICONS = [[1,84,84],[2,194,196],[3,146,151],[4,71,71],[5,146,151],[6,56,56],[7,188,118],[8,58,70],[9,37,44],[10,38,46],[11,104,242],[12,225,222],[13,119,116],[14,84,84],[15,138,140],[16,201,181],[17,210,210],[18,112,126],[19,186,188],[20,71,71],[21,146,151],[22,320,143],[23,84,84],[24,43,38],[25,56,56],[26,119,116],[27,68,60],[28,44,40],[29,40,43],[30,112,125],[31,84,84],[32,84,84],[33,37,46],[34,62,66],[35,36,45],[36,214,208],[37,56,71],[38,204,204],[39,71,71],[40,200,200],[41,56,56],[42,71,71],[43,186,188],[44,84,84],[45,250,100],[46,218,137],[47,115,249],[48,201,181],[49,167,210],[50,146,210],[51,182,176],[52,97,96],[53,84,84]];
+
+  const home = document.getElementById('home');
+  const layer = document.getElementById('icons');
+  const portraitEl = document.getElementById('portrait');
+  const page = document.getElementById('page');
+  const pageInner = document.getElementById('pageInner');
+  const shine = document.getElementById('shine');
+
+  // ---- Tweak these to change the feel ----
+  const ICON_SCALE    = 0.2;      // icon size
+  const DRIFT_SPEED   = 24;       // how fast icons wander (px per second)
+  const PUSH_RADIUS   = 130;      // how close the cursor gets before it pushes (px)
+  const PUSH_STRENGTH = 1500;     // how hard the cursor shoves
+  const FLING         = 0.35;     // how much of a fast swipe is passed on
+  const FRICTION      = 1.6;      // how quickly a shove calms down
+  const AVOID_HEAD    = false;    // true = icons steer around the head, false = they drift behind it
+  const BURST_SPEED   = 520;      // how fast icons shoot out of the head on load
+  const BLOW_SPEED    = 1 / 1100; // how much each scroll inflates the bubble (bigger = faster)
+  const BUBBLE_EASE   = 4.5;      // smoothness of the bubble (lower = softer, slower follow)
+  const MOUTH_X = 0.5, MOUTH_Y = 0.83;  // where the lips are on the portrait (fractions)
+
+  let seed = 7;
+  const rand = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+
+  const bodies = ICONS.map(([n, w, h]) => {
+    const img = new Image();
+    img.src = `assets/icons/icon-${String(n).padStart(2, '0')}.png`;
+    img.className = 'icon'; img.alt = ''; img.decoding = 'async';
+    layer.appendChild(img);
+    return { el: img, w0: w, h0: h, x: 0, y: 0, vx: 0, vy: 0,
+             heading: rand() * Math.PI * 2, wobble: rand() * 100, pace: 0.6 + rand() * 0.8,
+             rot: (rand() - 0.5) * 60, spin: (rand() - 0.5) * 24 };
+  });
+
+  // Portrait = an oval the icons float around
+  let W = 0, H = 0, P = { cx: 0, cy: 0, rx: 1, ry: 1 }, clearZones = [];
+  const ovalDepth = (x, y, r) => {
+    const ex = (x - P.cx) / (P.rx + r), ey = (y - P.cy) / (P.ry + r);
+    return ex * ex + ey * ey;
+  };
+
+  function layout() {
+    W = home.clientWidth; H = home.clientHeight;
+    const mobile = W < 700;
+    const scale = ICON_SCALE * Math.min(1, Math.max(0.8, W / 1440));
+    const hr = home.getBoundingClientRect(), pr = portraitEl.getBoundingClientRect();
+    P = { cx: pr.left - hr.left + pr.width / 2, cy: pr.top - hr.top + pr.height / 2,
+          rx: pr.width * 0.44, ry: pr.height * 0.46 };
+    // icons drift away from the big text so it stays readable
+    clearZones = [...home.querySelectorAll('.hi, .hi-scroll')].map(el => {
+      const r = el.getBoundingClientRect();
+      return { x: r.left - hr.left - 10, y: r.top - hr.top - 10, w: r.width + 20, h: r.height + 20 };
+    });
+    bodies.forEach((b, i) => {
+      b.w = b.w0 * scale; b.h = b.h0 * scale; b.r = Math.max(b.w, b.h) / 2;
+      b.el.style.width = b.w + 'px';
+      b.hidden = mobile && i % 3 === 1;
+      b.el.style.display = b.hidden ? 'none' : '';
+      if (!b.placed) {
+        if (reduceMotion) {
+          for (let t = 0; t < 100; t++) { b.x = rand() * W; b.y = rand() * H; if (ovalDepth(b.x, b.y, b.r) > 1) break; }
+          b.born = true; b.grow = 1;
+        } else {
+          // every icon starts hidden in the middle of the head
+          b.spawnA = rand() * Math.PI * 2;
+          b.x = P.cx + (rand() - 0.5) * P.rx * 0.3;
+          b.y = P.cy - P.ry * 0.15 + (rand() - 0.5) * P.ry * 0.3;
+          b.delay = 0.3 + rand() * 1.6;
+          b.born = false; b.grow = 0; b.el.style.opacity = 0;
+        }
+        b.placed = true;
+      }
+      if (b.born) { b.x = Math.min(Math.max(b.x, 0), W); b.y = Math.min(Math.max(b.y, 0), H); }
+    });
+  }
+
+  /* ================================================================
+     POINTER
+     ================================================================ */
+  const pointer = { x: -9999, y: -9999, vx: 0, vy: 0, t: 0, active: false };
+  addEventListener('pointermove', e => {
+    const now = performance.now(), dt = Math.max(now - pointer.t, 8) / 1000;
+    if (pointer.active) { pointer.vx = (e.clientX - pointer.x) / dt; pointer.vy = (e.clientY - pointer.y) / dt; }
+    pointer.x = e.clientX; pointer.y = e.clientY; pointer.t = now; pointer.active = true;
+  }, { passive: true });
+  addEventListener('pointerdown', e => { pointer.x = e.clientX; pointer.y = e.clientY; pointer.active = true; }, { passive: true });
+  document.addEventListener('pointerleave', () => { pointer.active = false; });
+  addEventListener('pointerup', e => { if (e.pointerType !== 'mouse') pointer.active = false; });
+
+  /* ================================================================
+     EYES — follow the cursor
+     ================================================================ */
+  const eyes = [...document.querySelectorAll('.eye')].map(el => ({ el, iris: el.querySelector('.iris'), ox: 0, oy: 0 }));
+  function updateEyes() {
+    for (const e of eyes) {
+      const r = e.el.getBoundingClientRect();
+      const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+      let tx = 0, ty = 0;
+      if (pointer.active) {
+        const dx = pointer.x - cx, dy = pointer.y - cy, d = Math.hypot(dx, dy) || 1;
+        const reach = Math.min(d / 220, 1);
+        tx = dx / d * reach * r.width * 0.24;
+        ty = dy / d * reach * r.height * 0.32;
+      }
+      e.ox += (tx - e.ox) * 0.2; e.oy += (ty - e.oy) * 0.2;
+      e.iris.style.setProperty('--ox', e.ox.toFixed(2) + 'px');
+      e.iris.style.setProperty('--oy', e.oy.toFixed(2) + 'px');
+    }
+  }
+
+  /* ================================================================
+     BUBBLEGUM — scrolling blows the bubble instead of moving the page
+     ================================================================ */
+  let mode = 'home';          // 'home' = blowing the bubble, 'page' = inside it, scrolling normally
+  let target = 0, prog = 0;   // target = where the scroll wants it, prog = smoothed value on screen
+  let lastInput = 0, pendingAnchor = null;
+  const B = { x: 0, y: 0, r: 0 };
+
+  function blow(amount) {
+    if (mode !== 'home') return;
+    target = clamp01(target + amount);
+    lastInput = performance.now();
+  }
+  function openPage(anchor) { if (mode === 'home') { pendingAnchor = anchor || null; target = 1; lastInput = performance.now(); } }
+  function enterPage() {
+    mode = 'page'; prog = target = 1;
+    page.classList.add('open'); shine.style.opacity = 0; layer.style.opacity = 0;
+    page.scrollTop = 0; page.focus({ preventScroll: true });
+    if (!pendingAnchor && !reduceMotion) page.classList.add('locked');   // nav links skip the wait
+    setTimeout(slapStickers, 120);               // stickers slap on as you land in the bubble
+    armReveal(document.getElementById('pageInner'), page);
+    if (pendingAnchor) {
+      const el = document.getElementById(pendingAnchor);
+      if (el) page.scrollTo({ top: el.offsetTop, behavior: reduceMotion ? 'auto' : 'smooth' });
+      pendingAnchor = null;
+    }
+  }
+  function exitPage() {
+    if (mode !== 'page') return;
+    mode = 'home'; target = 0; lastInput = performance.now();
+    page.classList.remove('open', 'locked'); page.scrollTop = 0;
+    last = performance.now();
+  }
+
+  // mouse wheel / trackpad
+  addEventListener('wheel', e => {
+    if (mode !== 'home') return;
+    e.preventDefault();
+    const dy = e.deltaMode === 1 ? e.deltaY * 16 : e.deltaY;
+    blow(dy * BLOW_SPEED);
+  }, { passive: false });
+  page.addEventListener('wheel', e => { if (page.scrollTop <= 0 && e.deltaY < -2) exitPage(); }, { passive: true });
+
+  // touch: swipe up to blow, swipe down at the top of the page to go back
+  let touchY = null;
+  addEventListener('touchstart', e => { touchY = e.touches[0].clientY; }, { passive: true });
+  addEventListener('touchmove', e => {
+    if (touchY === null) return;
+    const y = e.touches[0].clientY, dy = touchY - y; touchY = y;
+    if (mode === 'home') { e.preventDefault(); blow(dy / 650); }
+    else if (!catOpen && page.scrollTop <= 0 && dy < -4) exitPage();
+  }, { passive: false });
+  addEventListener('touchend', () => { touchY = null; }, { passive: true });
+
+  // keyboard
+  addEventListener('keydown', e => {
+    const down = ['ArrowDown', 'PageDown', ' ', 'Spacebar'].includes(e.key);
+    const up = ['ArrowUp', 'PageUp'].includes(e.key);
+    if (mode === 'home' && (down || up)) { e.preventDefault(); blow(down ? 0.3 : -0.3); }
+    else if (mode === 'page' && !catOpen && up && page.scrollTop <= 0) exitPage();
+  });
+
+  /* ================================================================
+     RESUME ROOM — click the glowing books to open the resume
+     ================================================================ */
+  const resumeView = document.getElementById('resumeView');
+  const resumeSheet = resumeView.querySelector('.resume-sheet');
+  function openResume(e) {
+    const books = document.getElementById('books').getBoundingClientRect();
+    resumeView.classList.add('open'); resumeView.setAttribute('aria-hidden', 'false');
+    if (!reduceMotion) {
+      const dx = books.left + books.width / 2 - innerWidth / 2, dy = books.top + books.height / 2 - innerHeight / 2;
+      resumeSheet.animate([
+        { transform: `translate(${dx}px, ${dy}px) scale(.15) rotate(-12deg)`, opacity: 0 },
+        { transform: 'scale(1.03) rotate(1deg)', opacity: 1, offset: .75 },
+        { transform: 'none', opacity: 1 },
+      ], { duration: 520, easing: 'cubic-bezier(.2,.8,.2,1)' });
+    }
+    document.getElementById('resumeClose').focus({ preventScroll: true });
+  }
+  function closeResume() {
+    if (!resumeView.classList.contains('open')) return;
+    resumeView.classList.remove('open'); resumeView.setAttribute('aria-hidden', 'true');
+    document.getElementById('books').focus({ preventScroll: true });
+  }
+  document.getElementById('books').addEventListener('click', openResume);
+
+  // click the cat: a sleepy stretch and some zzz drifting up from its head
+  const roomCat = document.getElementById('roomCat');
+  roomCat.addEventListener('click', () => {
+    roomCat.classList.remove('wiggle'); void roomCat.offsetWidth; roomCat.classList.add('wiggle', 'patted');   // prompt fades once patted
+    const room = document.getElementById('room');
+    const rr = room.getBoundingClientRect(), cr = roomCat.getBoundingClientRect();
+    const hx = cr.left - rr.left + cr.width * 0.9, hy = cr.top - rr.top + cr.height * 0.45;   // above the head
+    [0, 450, 900].forEach((delay, i) => setTimeout(() => {
+      const z = document.createElement('span');
+      z.className = 'zzz'; z.textContent = 'z';
+      z.style.left = (hx + i * 6) + 'px'; z.style.top = (hy - i * 10) + 'px';
+      z.style.fontSize = `clamp(${14 + i * 5}px, ${1.2 + i * 0.45}vw, ${22 + i * 8}px)`;
+      z.style.setProperty('--dx', (18 + i * 10) + 'px');
+      room.appendChild(z);
+      z.addEventListener('animationend', () => z.remove());
+    }, delay));
+  });
+  document.getElementById('resumeClose').addEventListener('click', closeResume);
+  resumeView.addEventListener('click', e => { if (e.target === resumeView) closeResume(); });
+  addEventListener('keydown', e => { if (e.key === 'Escape' && resumeView.classList.contains('open')) { e.stopImmediatePropagation(); closeResume(); } }, true);
+
+  /* ================================================================
+     WORK CATEGORIES — click a card to open its page; Back or Esc to close
+     ================================================================ */
+  const catView = document.getElementById('catView');
+  let catOpen = false;
+  // keep the spiky bubble's text inside the spikes: vertical padding grows with the text height
+  function fitBubbles() {
+    document.querySelectorAll('.spiky-bubble').forEach(b => {
+      const h = b.querySelector('p').offsetHeight; if (!h) return;
+      b.style.paddingBlock = Math.round(h * 0.36 + 24) + 'px';
+    });
+  }
+  addEventListener('resize', fitBubbles);
+  function openCat(key, x, y) {
+    catView.querySelectorAll('.cat-panel').forEach(p => p.classList.toggle('active', p.dataset.cat === key));
+    const vr = catView.getBoundingClientRect();
+    catView.style.setProperty('--ox', ((x ?? innerWidth / 2) - vr.left) + 'px');
+    catView.style.setProperty('--oy', ((y ?? innerHeight / 2) - vr.top) + 'px');
+    catView.scrollTop = 0;
+    catView.classList.add('show'); catView.setAttribute('aria-hidden', 'false');
+    catOpen = true; catView.focus({ preventScroll: true });
+    if (key === 'posters') requestAnimationFrame(() => posterCarousel.replay());
+    armReveal(catView.querySelector('.cat-panel.active'), catView);
+    fitBubbles();
+    // the page title slaps on like a sticker (at a slightly different angle each time)
+    const title = catView.querySelector('.cat-panel.active .cat-head h2');
+    if (title) {
+      title.style.setProperty('--tr', (-6 + Math.random() * 7).toFixed(1) + 'deg');
+      title.classList.remove('slap'); void title.offsetWidth; title.classList.add('slap');
+    }
+  }
+  function closeCat() {
+    if (typeof closeProject === 'function') closeProject();
+    if (!catOpen) return;
+    catView.classList.remove('show'); catView.setAttribute('aria-hidden', 'true');
+    catOpen = false; page.focus({ preventScroll: true });
+  }
+  catView.querySelectorAll('.cat-back').forEach(b => b.addEventListener('click', closeCat));
+  addEventListener('keydown', e => { if (e.key === 'Escape') closeCat(); });
+
+  /* ================================================================
+     POSTERS — CircularCarousel (React Bits), rebuilt in plain JavaScript
+     To add a real poster: put the image in assets/posters/ and set src, e.g.
+       { src: 'assets/posters/gig.jpg', alt: 'Gig poster for …', title: 'Gig Poster', subtitle: '2026' }
+     Leave src empty to keep the coloured placeholder for that slot.
+     ================================================================ */
+  const POSTERS = [
+    { src: 'assets/posters/bhbc-kick-off.jpg',        title: 'Broken Hearts — Kick Off',          subtitle: 'Footy finals promo poster', alt: 'Broken Hearts Burger Club poster: a red burger mascot with an eye patch and a footy, reading Kick off with a burger, we\'ll throw in the fries' },
+    { src: 'assets/posters/bhbc-mozzie-sticks.jpg',   title: 'Broken Hearts — Game On',           subtitle: 'Footy finals promo poster', alt: 'Broken Hearts Burger Club poster: a blue burger mascot under mozzarella sticks, reading Fancy burgers. Free mozzie sticks. Game on.' },
+    { src: 'assets/posters/dissolve-the-mind.jpg',    title: 'Dissolve the Mind',                 subtitle: 'Poster',           alt: 'Poster: "Dissolve the Mind" over layered purple and white ribbon forms' },
+    { src: 'assets/posters/clairo-charm-tour.jpg',    title: 'Clairo — Charm Tour',               subtitle: 'Tour poster',      alt: 'Tour poster for Clairo\'s Charm Tour with a pixel-stitched jar and dagger on olive green' },
+    { src: 'assets/posters/shameless-launch.jpg',     title: 'Dallow — Shameless',                subtitle: 'Single launch poster', alt: 'Single launch poster for Dallow\'s "Shameless" with a purple star over a portrait' },
+    { src: 'assets/posters/dallow-on-tour.jpg',       title: 'Dallow On Tour',                    subtitle: 'Tour poster',      alt: 'Black and white tour poster for Dallow with tour dates and stars' },
+    { src: 'assets/posters/dallow-epk-1.jpg',         title: 'Dallow — EPK',                      subtitle: 'Press kit, page 1', alt: 'Dallow electronic press kit page with band member photos and the DALLOW wordmark' },
+    { src: 'assets/posters/dallow-epk-2.jpg',         title: 'Dallow — EPK',                      subtitle: 'Press kit, page 2', alt: 'Dallow press kit page with headshots, a band photo and bio text' },
+    { src: 'assets/posters/dallow-tvs.jpg',           title: 'Dallow',                            subtitle: 'Merch artwork',    alt: 'Stacked halftone TVs showing DALLOW and eyes' },
+    { src: 'assets/posters/dallow-singles.jpg',       title: 'Dallow — Shameless & Candies',     subtitle: 'Single covers',    alt: 'Two Dallow single covers stacked: Shameless in purple and Candies in red' },
+    { src: 'assets/posters/dallow-flower.jpg',        title: 'Dallow — To Mend a Broken Heart',   subtitle: 'Artwork',          alt: 'Stippled flower and butterfly with "to mend a broken heart" and DALLOW' },
+    { src: 'assets/posters/later-daze.jpg',           title: 'Later Daze — End of an Era',        subtitle: 'Gig poster',       alt: 'Red halftone gig poster for Later Daze at The Brightside' },
+    { src: 'assets/posters/cant-pay-rent.jpg',        title: 'Can\'t Pay Rent, I Just Bought Cigs', subtitle: 'Type & photo series', alt: 'Poster with oversized sage text "Can\'t pay rent, I just bought cigs" over a photo' },
+    { src: 'assets/posters/run-club.jpg',             title: 'I Don\'t Wanna Join Ur Run Club',  subtitle: 'Type & photo series · featured in Frocket Magazine', alt: 'Poster with oversized aqua text "I don\'t wanna join ur run club" over a portrait' },
+    { src: 'assets/posters/love-like-my-parents.jpg', title: 'I Want a Love Like My Parents',     subtitle: 'Type & photo series', alt: 'Poster with oversized lilac text "I want a love like my parents" over a party photo' },
+    { src: 'assets/posters/nothing-is-niche.jpg',     title: 'Nothing Is Niche Anymore',          subtitle: 'Type & photo series', alt: 'Poster with oversized pink text "Nothing is niche anymore" over a garden photo' },
+    { src: 'assets/posters/art-degree.jpg',           title: 'My Art Degree Won\'t Pay My Rent', subtitle: 'Type & photo series · featured in Glass Magazine', alt: 'Poster with oversized yellow text "My art degree won\'t pay my rent" over a close-up portrait' },
+    { src: 'assets/posters/wont-settle.jpg',          title: 'I Won\'t Settle',                  subtitle: 'Lyric poster',     alt: 'Lyric poster with dense blue-grey type revealing a figure on a swing' },
+    { src: 'assets/posters/trust-the-process.jpg',    title: 'Trust the Process',                 subtitle: 'Poster',           alt: 'Poster: "Trust the Process" in halftone type over a motion-blurred figure in teal' },
+    { src: 'assets/posters/this-is-your-sign.jpg',    full: 'assets/posters/this-is-your-sign-full.jpg', title: 'This Is Your Sign', subtitle: 'Photo & type', alt: 'Hands raised beneath a curved concrete roof with "This is your sign" against the sky' },
+    { src: 'assets/posters/wander.jpg',               title: 'Wander',                            subtitle: 'Poster',           alt: 'Poster: tall green "Wander" lettering behind a hillside road' },
+  ];
+  const CAROUSEL = {               // same props as <CircularCarousel />
+    preset: 'cylinder', intro: 'rise',
+    cardWidth: 280, aspectRatio: 0.707,      // 0.707 = A-size poster (portrait)
+    speed: 16, captions: true, pauseOnHover: false,
+    fadeColor: '#F4F0E7',                    // matches the page background
+  };
+
+  // coloured stand-in posters (shown until a real src is added)
+  function placeholderPoster(i, title) {
+    const sw = [['#EC7357', '#E0B4CF'], ['#E0B4CF', '#5EA9C7'], ['#C6F985', '#EC7357'], ['#404040', '#C6F985'], ['#5EA9C7', '#F4F0E7']][i % 5];
+    const shapes = [
+      `<circle cx="300" cy="360" r="210" fill="${sw[1]}" stroke="#2B2B2B" stroke-width="10"/>`,
+      `<polygon points="300,120 360,290 540,300 400,410 450,590 300,490 150,590 200,410 60,300 240,290" fill="${sw[1]}" stroke="#2B2B2B" stroke-width="10" stroke-linejoin="round"/>`,
+      `<g fill="${sw[1]}" stroke="#2B2B2B" stroke-width="10">${[0, 1, 2, 3, 4].map(k => `<rect x="70" y="${150 + k * 86}" width="460" height="48" rx="24"/>`).join('')}</g>`,
+      `<path d="M300 140c90 0 110 80 170 120s60 150-10 200-90 130-180 110-160-40-170-140 20-130 70-200 60-90 120-90z" fill="${sw[1]}" stroke="#2B2B2B" stroke-width="10"/>`,
+    ][i % 4];
+    const ink = sw[0] === '#404040' ? '#F4F0E7' : '#2B2B2B';
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="600" height="849" viewBox="0 0 600 849">
+      <rect width="600" height="849" fill="${sw[0]}"/>${shapes}
+      <text x="40" y="80" font-family="Arial, sans-serif" font-weight="700" font-size="34" fill="${ink}">${String(i + 1).padStart(2, '0')}</text>
+      <text x="300" y="730" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="104"
+        fill="#F4F0E7" stroke="#2B2B2B" stroke-width="7" paint-order="stroke" letter-spacing="-4">${title.replace(/\d+/, '').trim().toUpperCase() || 'POSTER'}</text>
+      <text x="300" y="800" text-anchor="middle" font-family="Arial, sans-serif" font-weight="700" font-size="24" fill="${ink}" opacity=".75">add your poster</text>
+    </svg>`;
+    return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+  }
+
+  const CC_PRESETS = {
+    cylinder: { axis: 'y', tilt: -5,  perspective: 2500, curve: 1, spread: 1,    inward: false, billboard: false, backfaces: true,  window: 0 },
+    orbit:    { axis: 'y', tilt: -16, perspective: 1500, curve: 0, spread: 1.45, inward: false, billboard: true,  backfaces: false, window: 0 },
+    wheel:    { axis: 'x', tilt: 0,   perspective: 1800, curve: 0, spread: 1,    inward: false, billboard: false, backfaces: true,  window: 1.7 },
+    panorama: { axis: 'y', tilt: 0,   perspective: 0,    curve: 1, spread: 1,    inward: true,  billboard: false, backfaces: false, window: 0 },
+  };
+  const INTRO_LENGTH = { assemble: 1500, rise: 1400, spin: 1800, none: 0 };
+  const CC_TILES = 8, CC_OVERLAP = 2.5, DRAG_THRESHOLD = 5, CC_SPRING = 118, SETTLE_SPEED = 9, CAPTION_SPACE = 76;
+  const TO_RAD = Math.PI / 180;
+  const cclamp = (v, min, max) => Math.min(max, Math.max(min, v));
+  const wrapDeg = d => ((((d + 180) % 360) + 360) % 360) - 180;
+  const easeOut = t => 1 - Math.pow(1 - t, 4);
+  const easeOutQuint = t => 1 - Math.pow(1 - t, 5);
+  const rotX = (p, deg) => { const r = deg * TO_RAD, c = Math.cos(r), s = Math.sin(r); return [p[0], p[1] * c - p[2] * s, p[1] * s + p[2] * c]; };
+  const rotY = (p, deg) => { const r = deg * TO_RAD, c = Math.cos(r), s = Math.sin(r); return [p[0] * c + p[2] * s, p[1], -p[0] * s + p[2] * c]; };
+
+  function createCircularCarousel(root, props) {
+    const p = Object.assign({
+      preset: 'cylinder', intro: 'rise', cardWidth: 220, aspectRatio: 1, gap: 25,
+      autoplay: 'drift', speed: 14, interval: 3, direction: 'left', draggable: true, momentum: 0.6,
+      snap: true, pauseOnHover: true, focusOnClick: true, parallax: 0.3, stretch: 0.5,
+      depthFade: 0.55, fadeColor: '#000000', innerShade: 0.6, cornerRadius: 12, captions: false,
+    }, props);
+    const list = p.items;
+    const count = list.length;
+    const shape = CC_PRESETS[p.preset] ? p.preset : 'cylinder';
+    const layout = CC_PRESETS[shape];
+    const axis = layout.axis;
+    const curveValue = layout.billboard ? 0 : cclamp(p.curve ?? layout.curve, 0, 1);
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const cardW = Math.max(40, p.cardWidth);
+    const cardH = cardW / cclamp(p.aspectRatio, 0.2, 5);
+    const along = axis === 'x' ? cardH : cardW;
+    const step = 360 / count;
+
+    const radius = (() => {
+      const n = Math.max(count, 3);
+      const pitch = (along + p.gap) * layout.spread;
+      const chord = pitch / (2 * Math.sin(Math.PI / n));
+      const arc = (n * pitch) / (2 * Math.PI);
+      return Math.max(chord + (arc - chord) * curveValue, along * 0.6);
+    })();
+
+    const tiles = (() => {
+      const total = curveValue > 0.001 ? CC_TILES : 1;
+      const length = along / total;
+      const bend = curveValue > 0.001 ? radius / curveValue : 0;
+      return Array.from({ length: total }, (_, index) => {
+        const start = index * length - (index > 0 ? CC_OVERLAP / 2 : 0);
+        const end = (index + 1) * length + (index < total - 1 ? CC_OVERLAP / 2 : 0);
+        const center = (start + end) / 2 - along / 2;
+        const alpha = bend ? center / bend : 0;
+        const shift = bend ? bend * Math.sin(alpha) : center;
+        const sink = bend ? bend * (1 - Math.cos(alpha)) : 0;
+        const depth = layout.inward ? sink : -sink;
+        const turn = ((layout.inward ? -alpha : alpha) * 180) / Math.PI;
+        const move = axis === 'x'
+          ? `translate3d(0px, ${shift}px, ${depth}px) rotateX(${-turn}deg)`
+          : `translate3d(${shift}px, 0px, ${depth}px) rotateY(${turn}deg)`;
+        return { index, total, start, end, size: end - start, move };
+      });
+    })();
+
+    const s = {
+      count, step, radius, layout, axis,
+      tilt: p.tilt ?? layout.tilt,
+      perspective: layout.inward ? radius : (p.perspective ?? layout.perspective),
+      cardW, cardH,
+      intro: reduced ? 'none' : (p.intro in INTRO_LENGTH ? p.intro : 'rise'),
+      autoplay: reduced ? 'off' : p.autoplay,
+      speed: p.speed, interval: Math.max(0.5, p.interval), draggable: p.draggable,
+      momentum: cclamp(p.momentum, 0, 1), snap: p.snap, pauseOnHover: p.pauseOnHover,
+      parallax: reduced ? 0 : cclamp(p.parallax, 0, 1),
+      stretch: reduced ? 0 : cclamp(p.stretch, 0, 1),
+      depthFade: cclamp(p.depthFade, 0, 1), captions: p.captions, reduced,
+    };
+    const dragSign = layout.inward ? -1 : 1;
+    const state = {
+      angle: 0, velocity: 0, target: null, dir: (p.direction === 'right' ? 1 : -1) * dragSign,
+      press: null, drag: false, hover: false, pointer: { inside: false, x: 0, y: 0 },
+      yaw: 0, pitch: 0, intro: null, introDone: false, holdUntil: 0, stepAt: 0,
+      suppressClick: false, wheelTimer: 0, fit: 1, shift: 0, drop: 0, last: 0,
+    };
+    let ready = false, active = -1;
+
+    // ---------- build the DOM ----------
+    root.className = 'circular-carousel';
+    root.style.setProperty('--cc-fade', p.fadeColor);
+    root.style.setProperty('--cc-radius', Math.max(0, p.cornerRadius) + 'px');
+    root.style.setProperty('--cc-inner', (1 - cclamp(p.innerShade, 0, 1)).toFixed(3));
+    root.setAttribute('role', 'region');
+    root.setAttribute('aria-roledescription', 'carousel');
+    root.setAttribute('aria-label', 'Poster carousel');
+    root.tabIndex = 0;
+    root.dataset.axis = axis; root.dataset.shape = shape;
+    if (p.draggable) root.dataset.draggable = '';
+    const el = (cls, parent) => { const d = document.createElement('div'); d.className = cls; parent && parent.appendChild(d); return d; };
+    const view = el('circular-carousel__view', root);
+    const stage = el('circular-carousel__stage', view);
+    const camera = el('circular-carousel__camera', stage);
+    const ring = el('circular-carousel__ring', camera);
+
+    const renderTile = (item, tile, back) => {
+      const strip = back ? tile.total - 1 - tile.index : tile.index;
+      const first = strip === 0, last = strip === tile.total - 1, r = 'var(--cc-radius)';
+      const frameRadius = axis === 'x'
+        ? `${first ? r : 0} ${first ? r : 0} ${last ? r : 0} ${last ? r : 0}`
+        : `${first ? r : 0} ${last ? r : 0} ${last ? r : 0} ${first ? r : 0}`;
+      const offset = back ? along - tile.end : tile.start;
+      const size = tile.size;
+      const box = axis === 'x'
+        ? { left: -cardW / 2, top: -size / 2, width: cardW, height: size }
+        : { left: -size / 2, top: -cardH / 2, width: size, height: cardH };
+      const photo = axis === 'x'
+        ? { left: 0, top: -offset, width: cardW, height: cardH }
+        : { left: -offset, top: 0, width: cardW, height: cardH };
+      const t = el('circular-carousel__tile');
+      t.setAttribute('aria-hidden', 'true');
+      Object.assign(t.style, { left: box.left + 'px', top: box.top + 'px', width: box.width + 'px', height: box.height + 'px',
+        transform: tile.move + (back ? (axis === 'x' ? ' rotateX(180deg)' : ' rotateY(180deg)') : '') });
+      const f = el('circular-carousel__frame', t);
+      Object.assign(f.style, { height: (axis === 'x' ? size : cardH) + 'px', borderRadius: frameRadius });
+      const img = document.createElement('img');
+      img.className = 'circular-carousel__photo'; img.src = item.src; img.alt = ''; img.draggable = false; img.decoding = 'async';
+      Object.assign(img.style, { left: photo.left + 'px', top: photo.top + 'px', width: photo.width + 'px', height: photo.height + 'px' });
+      f.appendChild(img);
+      if (back) el('circular-carousel__inner', f);
+      el('circular-carousel__shade', f);
+      return t;
+    };
+    const cards = list.map((item, index) => {
+      const c = el('circular-carousel__card', ring);
+      c.dataset.ccIndex = index;
+      c.setAttribute('role', 'group'); c.setAttribute('aria-roledescription', 'slide');
+      c.setAttribute('aria-label', `${item.title || item.alt || `Image ${index + 1}`}, ${index + 1} of ${count}`);
+      tiles.forEach(tile => c.appendChild(renderTile(item, tile, false)));
+      if (layout.backfaces) tiles.forEach(tile => c.appendChild(renderTile(item, tile, true)));
+      return c;
+    });
+
+    // captions with rolling digit counter
+    let caption, titleHolder, reels = [];
+    if (s.captions) {
+      caption = el('circular-carousel__caption', root); caption.setAttribute('aria-hidden', 'true');
+      titleHolder = document.createElement('span'); caption.appendChild(titleHolder);
+      const cnt = document.createElement('span'); cnt.className = 'circular-carousel__count'; caption.appendChild(cnt);
+      const digits = document.createElement('span'); digits.className = 'circular-carousel__digits'; cnt.appendChild(digits);
+      const width = Math.max(2, String(count).length);
+      for (let d = 0; d < width; d++) {
+        const dg = document.createElement('span'); dg.className = 'circular-carousel__digit';
+        const reel = document.createElement('span'); reel.className = 'circular-carousel__reel';
+        reel.innerHTML = '0123456789'.split('').map(n => `<span>${n}</span>`).join('');
+        dg.appendChild(reel); digits.appendChild(dg); reels.push(reel);
+      }
+      cnt.insertAdjacentHTML('beforeend', `<span class="circular-carousel__slash">/</span><span>${String(count).padStart(width, '0')}</span>`);
+    }
+    const live = el('circular-carousel__live', root);
+    live.setAttribute('aria-live', 'polite'); live.setAttribute('aria-atomic', 'true');
+
+    function setActive(i) {
+      active = i;
+      const cur = list[i] || list[0];
+      const label = cur.title || cur.alt || `Image ${i + 1}`;
+      live.textContent = `${label}, ${i + 1} of ${count}`;
+      if (!s.captions) return;
+      const t = document.createElement('span');
+      t.className = 'circular-carousel__title';
+      t.textContent = cur.title || cur.alt || '';
+      if (cur.subtitle) { const sub = document.createElement('span'); sub.className = 'circular-carousel__subtitle'; sub.textContent = cur.subtitle; t.appendChild(sub); }
+      titleHolder.replaceWith(t); titleHolder = t;
+      String(i + 1).padStart(reels.length, '0').split('').forEach((d, k) => { reels[k].style.transform = `translateY(${-Number(d) * 10}%)`; });
+    }
+
+    // ---------- motion ----------
+    let raf = 0, visible = true;
+    const nearest = a => Math.round(a / s.step) * s.step;
+
+    function measure() {
+      const rect = root.getBoundingClientRect();
+      if (!rect.width || !rect.height) return;
+      const room = s.captions ? CAPTION_SPACE : 0;
+      const width = rect.width * 0.94, height = (rect.height - room) * 0.92, P = s.perspective;
+      let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+      if (s.layout.inward) {
+        minX = -width / 2; maxX = width / 2; minY = -s.cardH / 2; maxY = s.cardH / 2;
+      } else {
+        const corners = [[-s.cardW / 2, -s.cardH / 2], [s.cardW / 2, -s.cardH / 2], [-s.cardW / 2, s.cardH / 2], [s.cardW / 2, s.cardH / 2]];
+        const limit = s.layout.window ? s.layout.window * s.step : 180;
+        for (let a = -limit; a <= limit; a += limit / 24) {
+          for (const [cx, cy] of corners) {
+            let q;
+            if (s.axis === 'x') q = rotY(rotX([cx, cy, s.radius], -a), s.tilt);
+            else if (s.layout.billboard) { const c = rotY([0, 0, s.radius], a); q = rotX([c[0] + cx, cy, c[2]], s.tilt); }
+            else q = rotX(rotY([cx, cy, s.radius], a), s.tilt);
+            q = [q[0], q[1], q[2] - s.radius];
+            if (q[2] >= P * 0.95) continue;
+            const k = P / (P - q[2]);
+            minX = Math.min(minX, q[0] * k); maxX = Math.max(maxX, q[0] * k);
+            minY = Math.min(minY, q[1] * k); maxY = Math.max(maxY, q[1] * k);
+          }
+        }
+      }
+      const fit = Math.min(1, width / Math.max(maxX - minX, 1), height / Math.max(maxY - minY, 1));
+      state.fit = fit;
+      state.shift = -((minY + maxY) / 2) * fit - room / 2;
+      state.drop = s.axis === 'x' ? (rect.width / fit) * 0.55 + s.cardW : (rect.height / fit) * 0.55 + s.cardH;
+      stage.style.perspective = `${P}px`;
+      stage.style.transform = `translate3d(0, ${state.shift}px, 0) scale(${fit})`;
+    }
+
+    function introCard(elapsed, landing) {
+      if (!state.intro) return { radius: 1, lift: 0 };
+      const type = state.intro.type, reach = Math.abs(wrapDeg(landing + state.angle));
+      if (type === 'assemble') { const pp = easeOut(cclamp((elapsed - (reach / 180) * 420) / 1080, 0, 1)); return { radius: 1 + 0.6 * (1 - pp), lift: 0 }; }
+      if (type === 'rise') { const pp = easeOutQuint(cclamp((elapsed - (reach / 180) * 480) / 900, 0, 1)); return { radius: 1, lift: (1 - pp) * state.drop }; }
+      if (type === 'spin') { const pp = easeOut(cclamp(elapsed / INTRO_LENGTH.spin, 0, 1)); return { radius: 1 + 0.28 * (1 - pp), lift: 0 }; }
+      return { radius: 1, lift: 0 };
+    }
+
+    function advance(dt, now) {
+      if (!state.introDone && ready) {
+        if (!state.intro) { if (s.intro === 'none') state.introDone = true; else state.intro = { type: s.intro, start: now }; }
+        if (state.intro && now - state.intro.start >= INTRO_LENGTH[state.intro.type]) { state.intro = null; state.introDone = true; }
+      }
+      const paused = (s.pauseOnHover && state.hover) || state.drag || now < state.holdUntil;
+      const cruise = s.autoplay === 'drift' && !paused && !state.intro ? s.speed * state.dir : 0;
+      let busy = Boolean(state.intro) || state.drag;
+      if (state.drag || state.intro) {
+        state.velocity = state.drag ? state.velocity : 0;
+      } else if (state.target !== null) {
+        let remaining = dt; const damping = 2 * Math.sqrt(CC_SPRING);
+        while (remaining > 0) {
+          const h = Math.min(remaining, 1 / 240);
+          const accel = CC_SPRING * (state.target - state.angle) - damping * state.velocity;
+          state.velocity += accel * h; state.angle += state.velocity * h; remaining -= h;
+        }
+        if (Math.abs(state.target - state.angle) < 0.004 && Math.abs(state.velocity) < 0.03) { state.angle = state.target; state.velocity = 0; state.target = null; }
+        busy = true;
+      } else {
+        const tau = 0.18 + s.momentum * 1.5;
+        state.velocity += (cruise - state.velocity) * (1 - Math.exp(-dt / tau));
+        state.angle += state.velocity * dt;
+        if (cruise === 0 && s.snap && Math.abs(state.velocity) < SETTLE_SPEED) state.target = nearest(state.angle);
+        busy = busy || cruise !== 0 || Math.abs(state.velocity) > 0.01 || state.target !== null;
+      }
+      if (s.autoplay === 'step' && !paused && !state.intro && state.introDone) {
+        if (!state.stepAt) state.stepAt = now + s.interval * 1000;
+        if (now >= state.stepAt) { state.target = (state.target ?? nearest(state.angle)) + s.step * state.dir; state.stepAt = now + s.interval * 1000; }
+        busy = true;
+      } else state.stepAt = 0;
+      if (now < state.holdUntil) busy = true;
+      const ease = 1 - Math.exp(-dt / 0.35);
+      const aimYaw = state.pointer.inside ? state.pointer.x * s.parallax * 9 : 0;
+      const aimPitch = state.pointer.inside ? -state.pointer.y * s.parallax * 6 : 0;
+      state.yaw += (aimYaw - state.yaw) * ease; state.pitch += (aimPitch - state.pitch) * ease;
+      if (Math.abs(aimYaw - state.yaw) > 0.01 || Math.abs(aimPitch - state.pitch) > 0.01) busy = true;
+      return busy;
+    }
+
+    function render(now) {
+      const elapsed = state.intro ? now - state.intro.start : 0;
+      const swell = 1 + s.stretch * 0.12 * Math.min(1, Math.abs(state.velocity) / 420);
+      let spinOffset = 0;
+      if (state.intro?.type === 'spin') spinOffset = -300 * state.dir * (1 - easeOut(cclamp(elapsed / INTRO_LENGTH.spin, 0, 1)));
+      else if (state.intro?.type === 'assemble') spinOffset = -32 * state.dir * (1 - easeOut(cclamp(elapsed / INTRO_LENGTH.assemble, 0, 1)));
+      const angle = state.angle + spinOffset, R = s.radius * swell;
+      if (s.axis === 'x') {
+        camera.style.transform = `translate3d(0, 0, ${-R}px) rotateY(${s.tilt + state.yaw}deg) rotateX(${state.pitch}deg)`;
+        ring.style.transform = `rotateX(${-angle}deg)`;
+      } else if (s.layout.inward) {
+        camera.style.transform = `translate3d(0, 0, ${s.perspective - 1}px) rotateX(${s.tilt + state.pitch}deg) rotateY(${state.yaw}deg)`;
+        ring.style.transform = `rotateY(${angle}deg)`;
+      } else {
+        camera.style.transform = `translate3d(0, 0, ${-R}px) rotateX(${s.tilt + state.pitch}deg) rotateY(${state.yaw}deg)`;
+        ring.style.transform = `rotateY(${angle}deg)`;
+      }
+      for (let index = 0; index < s.count; index++) {
+        const card = cards[index], base = index * s.step, mod = introCard(elapsed, base), r = R * mod.radius;
+        let transform;
+        if (s.axis === 'x') transform = `rotateX(${-base}deg) translateZ(${r}px)`;
+        else if (s.layout.inward) transform = `rotateY(${base}deg) translateZ(${-r}px)`;
+        else { transform = `rotateY(${base}deg) translateZ(${r}px)`; if (s.layout.billboard) transform += ` rotateY(${-(base + angle)}deg)`; }
+        if (mod.lift) transform += s.axis === 'x' ? ` translateX(${mod.lift}px)` : ` translateY(${mod.lift}px)`;
+        card.style.transform = transform;
+        const world = wrapDeg(base + angle), facing = Math.cos(world * TO_RAD);
+        if (s.layout.inward) card.style.visibility = Math.abs(world) > 86 ? 'hidden' : '';
+        card.style.setProperty('--cc-depth', (s.depthFade * Math.pow((1 - facing) / 2, 1.25)).toFixed(3));
+      }
+      const idx = ((Math.round(-state.angle / s.step) % s.count) + s.count) % s.count || 0;
+      if (idx !== active) { setActive(idx); p.onChange?.(idx); }
+    }
+
+    function frame(now) {
+      raf = 0;
+      const dt = state.last ? Math.min((now - state.last) / 1000, 0.05) : 1 / 60;
+      state.last = now;
+      const busy = advance(dt, now);
+      render(now);
+      if (busy && visible && !document.hidden) raf = requestAnimationFrame(frame);
+      else state.last = 0;
+    }
+    const wake = () => { if (!raf && visible && !document.hidden) raf = requestAnimationFrame(frame); };
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) { cancelAnimationFrame(raf); raf = 0; state.last = 0; } else wake();
+    });
+    new ResizeObserver(() => { measure(); wake(); }).observe(root);
+    new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+      if (visible) wake(); else { cancelAnimationFrame(raf); raf = 0; state.last = 0; }
+    }).observe(root);
+
+    root.addEventListener('wheel', e => {
+      if (!s.draggable) return;
+      const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : 0;
+      if (!delta) return;                         // vertical scrolling still scrolls the page
+      e.preventDefault();
+      const perPixel = 180 / (Math.PI * s.radius * state.fit), sign = s.layout.inward ? -1 : 1;
+      state.target = null;
+      state.angle -= delta * perPixel * sign;
+      state.velocity = -delta * perPixel * sign * 30;
+      state.holdUntil = performance.now() + 1600;
+      clearTimeout(state.wheelTimer);
+      state.wheelTimer = setTimeout(() => { if (s.snap) state.target = nearest(state.angle + state.velocity * 0.12); wake(); }, 140);
+      wake();
+    }, { passive: false });
+
+    // ---------- pointer: drag, throw, hover, parallax ----------
+    const focusIndex = index => {
+      let target = -index * s.step;
+      target += 360 * Math.round((state.angle - target) / 360);
+      state.target = target; state.holdUntil = performance.now() + 2800; wake();
+    };
+    const stepBy = delta => {
+      const base = state.target ?? Math.round(state.angle / s.step) * s.step;
+      state.target = base - delta * s.step * (s.layout.inward ? -1 : 1);
+      state.holdUntil = performance.now() + 2800; wake();
+    };
+    const updatePointer = e => {
+      const rect = root.getBoundingClientRect();
+      state.pointer.x = cclamp(((e.clientX - rect.left) / rect.width) * 2 - 1, -1, 1);
+      state.pointer.y = cclamp(((e.clientY - rect.top) / rect.height) * 2 - 1, -1, 1);
+    };
+    root.addEventListener('pointerdown', e => {
+      state.suppressClick = false;
+      if (!s.draggable || e.button !== 0) return;
+      state.press = { id: e.pointerId, x: e.clientX, y: e.clientY, angle: state.angle, moved: false, origin: 0, samples: [{ time: performance.now(), angle: state.angle }] };
+    });
+    root.addEventListener('pointermove', e => {
+      if (e.pointerType === 'mouse') { state.pointer.inside = true; updatePointer(e); }
+      const press = state.press;
+      if (!press || press.id !== e.pointerId) { wake(); return; }
+      const delta = s.axis === 'x' ? e.clientY - press.y : e.clientX - press.x;
+      const cross = s.axis === 'x' ? e.clientX - press.x : e.clientY - press.y;
+      if (!press.moved) {
+        if (Math.abs(delta) < DRAG_THRESHOLD) return;
+        if (Math.abs(cross) > Math.abs(delta) * 1.2 && e.pointerType !== 'mouse') { state.press = null; return; }
+        press.moved = true; press.origin = delta;
+        state.drag = true; state.target = null; state.velocity = 0;
+        root.dataset.dragging = '';
+        try { root.setPointerCapture(e.pointerId); } catch {}
+      }
+      const perPixel = 180 / (Math.PI * s.radius * state.fit);
+      state.angle = press.angle + (delta - press.origin) * perPixel * (s.layout.inward ? -1 : 1);
+      const now = performance.now();
+      press.samples.push({ time: now, angle: state.angle });
+      while (press.samples.length > 2 && now - press.samples[0].time > 110) press.samples.shift();
+      wake();
+    });
+    const release = e => {
+      const press = state.press;
+      if (!press || press.id !== e.pointerId) return;
+      state.press = null;
+      if (!press.moved) return;
+      state.drag = false; delete root.dataset.dragging; state.suppressClick = true;
+      const first = press.samples[0], last = press.samples[press.samples.length - 1];
+      const span = (last.time - first.time) / 1000;
+      const velocity = span > 0.008 ? cclamp((last.angle - first.angle) / span, -1400, 1400) : 0;
+      state.velocity = velocity;
+      if (Math.abs(velocity) > 60) state.dir = Math.sign(velocity);
+      const coasting = s.autoplay === 'drift' && !(s.pauseOnHover && state.hover && e.pointerType === 'mouse');
+      if (s.snap && !coasting) state.target = Math.round((state.angle + velocity * (0.18 + s.momentum * 1.5) * 0.55) / s.step) * s.step;
+      wake();
+    };
+    root.addEventListener('pointerup', release);
+    root.addEventListener('pointercancel', release);
+    root.addEventListener('pointerenter', e => { if (e.pointerType !== 'mouse') return; state.hover = true; wake(); });
+    root.addEventListener('pointerleave', e => { if (e.pointerType === 'mouse') { state.hover = false; state.pointer.inside = false; } wake(); });
+    root.addEventListener('click', e => {
+      if (state.suppressClick) { state.suppressClick = false; return; }
+      const card = e.target.closest?.('[data-cc-index]');
+      if (!card) return;
+      const index = Number(card.dataset.ccIndex);
+      if (p.focusOnClick) focusIndex(index);
+      p.onItemClick?.(list[index], index);
+    });
+    root.addEventListener('keydown', e => {
+      const forward = axis === 'x' ? 'ArrowDown' : 'ArrowRight', backward = axis === 'x' ? 'ArrowUp' : 'ArrowLeft';
+      if (e.key === forward) stepBy(1);
+      else if (e.key === backward) stepBy(-1);
+      else if (e.key === 'Home') focusIndex(0);
+      else if (e.key === 'End') focusIndex(count - 1);
+      else if (e.key === 'Enter' || e.key === ' ') p.onItemClick?.(list[active], active);
+      else return;
+      e.preventDefault();
+    });
+
+    // ---------- load images, then show ----------
+    const load = src => new Promise(res => {
+      const im = new Image(); im.decoding = 'async';
+      im.onload = () => (im.decode ? im.decode().then(res, res) : res());
+      im.onerror = res; im.src = src;
+    });
+    Promise.race([Promise.all(list.slice(0, 16).map(i => load(i.src))), new Promise(r => setTimeout(r, 2400))]).then(() => {
+      ready = true; root.dataset.ready = ''; state.introDone = false; state.intro = null; wake();
+    });
+    measure(); render(performance.now()); wake();
+
+    return {
+      replay() { state.introDone = false; state.intro = null; state.angle = nearest(state.angle); measure(); wake(); },
+    };
+  }
+
+  /* ================================================================
+     CLICK A POSTER → your icons explode out and the poster opens big
+     ================================================================ */
+  const BURST_COUNT = 28;          // how many icons fly out
+  const BURST_POWER = 1;           // 1 = normal, bigger = they fly further
+  const burstLayer = document.getElementById('iconBurst');
+
+  function explodeIcons(x, y) {
+    if (reduceMotion) return;
+    for (let i = 0; i < BURST_COUNT; i++) {
+      const b = bodies[Math.floor(Math.random() * bodies.length)];
+      const img = document.createElement('img');
+      img.src = b.el.src; img.alt = '';
+      const size = 14 + Math.random() * 16;                 // px across (small)
+      img.style.width = size * Math.min(1, b.w0 / Math.max(b.w0, b.h0) * 1.4) + 'px';
+      burstLayer.appendChild(img);
+      const ang = Math.random() * Math.PI * 2;
+      const speed = (420 + Math.random() * 620) * BURST_POWER;
+      const vx = Math.cos(ang) * speed, vy = Math.sin(ang) * speed - 260 * BURST_POWER;
+      const g = 1500, T = 1.05 + Math.random() * 0.45;        // gravity, life (s)
+      const spin = (Math.random() - 0.5) * 900, r0 = (Math.random() - 0.5) * 60;
+      // shorter flight, then the icon lands in the background and keeps floating
+      const TL = T * 0.6, frames = [];
+      for (let k = 0; k <= 10; k++) {
+        const t = (k / 10) * TL;
+        const px = x + vx * t - size / 2, py = y + vy * t + 0.5 * g * t * t - size / 2;
+        const sc = k === 0 ? 0.2 : k === 1 ? 1.15 : 1;
+        frames.push({ transform: `translate(${px}px, ${py}px) rotate(${r0 + spin * t}deg) scale(${sc})` });
+      }
+      img.animate(frames, { duration: TL * 1000, easing: 'linear', fill: 'forwards' }).onfinish = () => {
+        const endX = x + vx * TL, endY = y + vy * TL + 0.5 * g * TL * TL;
+        landIcon(img, endX, endY, vx * 0.35, (vy + g * TL) * 0.2, r0 + spin * TL, spin * 0.08);
+      };
+    }
+  }
+
+  /* ---- Floating icons behind the posters (they arrive from explosions) ---- */
+  const MAX_FLOATERS = 90;          // older ones gently fade out past this many
+  const floatLayer = document.getElementById('posterFloat');
+  const floaters = [];
+  let floatGravity = false;          // true = icons have fallen to the bottom
+  let floatRaf = 0, floatLast = 0;
+
+  function landIcon(img, x, y, vx, vy, rot, spin) {
+    const fr = floatLayer.getBoundingClientRect();
+    img.getAnimations().forEach(a => a.cancel());
+    const w = img.offsetWidth || 50;
+    floatLayer.appendChild(img);
+    floaters.push({ el: img, x: x - fr.left, y: y - fr.top, vx, vy, rot, spin, r: w / 2,
+                    heading: Math.atan2(vy, vx), wobble: Math.random() * 100, pace: 0.5 + Math.random() * 0.9 });
+    while (floaters.length > MAX_FLOATERS) {
+      const old = floaters.shift();
+      old.el.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 500, fill: 'forwards' }).onfinish = () => old.el.remove();
+    }
+    if (!floatRaf) { floatLast = 0; floatRaf = requestAnimationFrame(stepFloaters); }
+  }
+
+  function stepFloaters(now) {
+    floatRaf = 0;
+    const panelOn = catOpen && floatLayer.parentElement.classList.contains('active');
+    if (!floaters.length) return;
+    const dt = floatLast ? Math.min((now - floatLast) / 1000, 0.05) : 1 / 60; floatLast = now;
+    if (panelOn) {
+      const fr = floatLayer.getBoundingClientRect(), W = fr.width, H = fr.height;
+      const px = pointer.x - fr.left, py = pointer.y - fr.top;
+      const ease = 1 - Math.exp(-FRICTION * dt);
+      for (const f of floaters) {
+        if (floatGravity) {                         // fall and settle on the bottom of the screen
+          f.vy += 2200 * dt;
+          if (f.y > H - f.r * 1.2) f.vx *= Math.exp(-5 * dt);
+        } else {
+          const drift = reduceMotion ? 0 : DRIFT_SPEED * f.pace;
+          f.heading += Math.sin(now / 4000 + f.wobble) * 0.5 * dt;
+          f.vx += (Math.cos(f.heading) * drift - f.vx) * ease;
+          f.vy += (Math.sin(f.heading) * drift - f.vy) * ease;
+        }
+        if (pointer.active) {                       // cursor pushes them, same as the homepage
+          const dx = f.x - px, dy = f.y - py, d = Math.hypot(dx, dy) || 1, reach = PUSH_RADIUS + f.r;
+          if (d < reach) { const k = 1 - d / reach; f.vx += dx / d * PUSH_STRENGTH * k * dt + pointer.vx * FLING * k * dt * 8; f.vy += dy / d * PUSH_STRENGTH * k * dt + pointer.vy * FLING * k * dt * 8; f.heading = Math.atan2(f.vy, f.vx); }
+        }
+        const m = f.r * 0.4;
+        if (f.x < m && f.vx < 0)     { f.vx *= -0.8; f.heading = Math.PI - f.heading; }
+        if (f.x > W - m && f.vx > 0) { f.vx *= -0.8; f.heading = Math.PI - f.heading; }
+        if (f.y < m && f.vy < 0)     { f.vy *= -0.8; f.heading = -f.heading; }
+        if (floatGravity) {
+          if (f.y > H - f.r && f.vy > 0) { f.vy *= -0.28; f.y = H - f.r; }          // land with a little bounce
+          if (f.x < f.r && f.vx < 0) f.vx *= -0.5;
+          if (f.x > W - f.r && f.vx > 0) f.vx *= -0.5;
+        } else if (f.y > H - m && f.vy > 0) { f.vy *= -0.8; f.heading = -f.heading; }
+        f.x = Math.min(Math.max(f.x + f.vx * dt, -f.r), W + f.r);
+        f.y = Math.min(Math.max(f.y + f.vy * dt, -f.r), H + f.r);
+        f.rot += (f.spin + f.vx * (floatGravity ? 0.6 : 0.12)) * dt; f.spin *= Math.exp(-(floatGravity ? 3 : 0.8) * dt);
+        f.el.style.transform = `translate3d(${(f.x - f.r).toFixed(1)}px, ${(f.y - f.r).toFixed(1)}px, 0) rotate(${f.rot.toFixed(1)}deg)`;
+      }
+    }
+    if (panelOn && floatGravity) {
+      for (let i = 0; i < floaters.length; i++) for (let j = i + 1; j < floaters.length; j++) {
+        const a = floaters[i], c = floaters[j], dx = c.x - a.x, dy = c.y - a.y, d = Math.hypot(dx, dy) || 1, min = (a.r + c.r) * 0.9;
+        if (d < min) { const push = (min - d) / 2, ux = dx / d, uy = dy / d; a.x -= ux * push; a.y -= uy * push; c.x += ux * push; c.y += uy * push; }
+      }
+    }
+    floatRaf = requestAnimationFrame(stepFloaters);   // keeps going (cheaply idles while the page is closed)
+  }
+
+  function toggleIconGravity() {
+    floatGravity = !floatGravity;
+    if (!floatGravity) floaters.forEach(f => {      // float back up with a little jump
+      f.vy = -(380 + Math.random() * 420); f.vx = (Math.random() - 0.5) * 300;
+      f.heading = -Math.PI / 2 + (Math.random() - 0.5) * 1.4; f.spin = (Math.random() - 0.5) * 120;
+    });
+  }
+  // click anywhere on the posters page (not the spinner, buttons or links) to drop / lift the icons
+  document.querySelector('.cat-panel[data-cat="posters"]').addEventListener('click', e => {
+    if (e.target.closest('#posterCarousel, button, a')) return;
+    toggleIconGravity();
+  });
+
+  const posterView = document.getElementById('posterView');
+  const posterBig = document.getElementById('posterBig');
+  let posterIndex = -1, posterItems = [], lastFocus = null;
+
+  function showPoster(i) {
+    posterIndex = (i + posterItems.length) % posterItems.length;
+    const it = posterItems[posterIndex];
+    posterBig.src = it.full || it.src; posterBig.alt = it.alt || it.title || '';
+    document.getElementById('posterTitle').textContent = it.title || '';
+    document.getElementById('posterSub').textContent = it.subtitle || '';
+  }
+  function openPoster(i, x, y) {
+    showPoster(i);
+    lastFocus = document.activeElement;
+    posterView.classList.add('open'); posterView.setAttribute('aria-hidden', 'false');
+    if (!reduceMotion) {
+      // grow out of the spot you clicked
+      const vw = innerWidth, vh = innerHeight;
+      const dx = (x ?? vw / 2) - vw / 2, dy = (y ?? vh / 2) - vh / 2;
+      posterBig.animate([
+        { transform: `translate(${dx}px, ${dy}px) scale(.25) rotate(-8deg)`, opacity: 0 },
+        { transform: 'translate(0, 0) scale(1.04) rotate(1deg)', opacity: 1, offset: .7 },
+        { transform: 'none', opacity: 1 },
+      ], { duration: 520, easing: 'cubic-bezier(.2,.8,.2,1)' });
+    }
+    document.getElementById('posterClose').focus({ preventScroll: true });
+  }
+  function closePoster() {
+    if (!posterView.classList.contains('open')) return;
+    const done = () => { posterView.classList.remove('open'); posterView.setAttribute('aria-hidden', 'true'); lastFocus?.focus?.({ preventScroll: true }); };
+    if (reduceMotion) return done();
+    posterBig.animate([{ transform: 'none', opacity: 1 }, { transform: 'scale(.6) rotate(4deg)', opacity: 0 }],
+      { duration: 220, easing: 'ease-in', fill: 'forwards' }).onfinish = function () { done(); this.cancel(); };
+  }
+  document.getElementById('posterClose').addEventListener('click', closePoster);
+  document.getElementById('posterPrev').addEventListener('click', e => { e.stopPropagation(); showPoster(posterIndex - 1); });
+  document.getElementById('posterNext').addEventListener('click', e => { e.stopPropagation(); showPoster(posterIndex + 1); });
+  posterView.addEventListener('click', e => { if (e.target === posterView) closePoster(); });   // click the dark area to close
+  addEventListener('keydown', e => {
+    if (!posterView.classList.contains('open')) return;
+    if (e.key === 'Escape') { e.stopImmediatePropagation(); closePoster(); }
+    else if (e.key === 'ArrowRight') showPoster(posterIndex + 1);
+    else if (e.key === 'ArrowLeft') showPoster(posterIndex - 1);
+    else return;
+    e.preventDefault();
+  }, true);
+
+  const posterRoot = document.getElementById('posterCarousel');
+  let pressAt = null;
+  posterRoot.addEventListener('pointerdown', e => { pressAt = { x: e.clientX, y: e.clientY }; }, true);
+
+  const posterCarousel = createCircularCarousel(posterRoot, {
+    ...CAROUSEL,
+    items: POSTERS.map((it, i) => ({ ...it, src: it.src || placeholderPoster(i, it.title), alt: it.alt || it.title })),
+    onItemClick: (item, index) => {
+      const r = posterRoot.getBoundingClientRect();
+      const x = pressAt?.x ?? r.left + r.width / 2, y = pressAt?.y ?? r.top + r.height * 0.45;
+      pressAt = null;
+      explodeIcons(x, y);
+      setTimeout(() => openPoster(index, x, y), reduceMotion ? 0 : 140);
+    },
+  });
+  posterItems = POSTERS.map((it, i) => ({ ...it, src: it.src || placeholderPoster(i, it.title) }));
+
+  /* ================================================================
+     SELECTED WORK — phone folders open the category pages
+     ================================================================ */
+  const hold = document.getElementById('hold');
+  const isTouch = matchMedia('(hover: none)').matches;
+  if (isTouch) document.querySelector('.hold-hint').textContent = 'tap the phone · pick a folder';
+  // little previews inside each folder
+  const folderLook = {
+    posters:  [{ c: 'var(--coral)' }, { c: 'var(--blue)' }, { c: 'var(--pink)' }, { c: 'var(--lime)' }],
+    projects: [{ c: 'var(--charcoal)' }, { c: 'var(--paper)' }, { c: 'var(--coral)' }, { c: 'var(--blue)' }],
+    resume:   [{ c: 'var(--pink)' }, { c: 'var(--blue)' }, { c: 'var(--lime)' }, { c: 'var(--charcoal)' }],
+  };
+  hold.querySelectorAll('.folder').forEach(f => {
+    const tile = f.querySelector('.tile');
+    folderLook[f.dataset.cat].forEach(m => {
+      const sp = document.createElement('span');
+      if (m.img) sp.style.backgroundImage = `url("${m.img}")`; else sp.style.setProperty('--c', m.c);
+      tile.appendChild(sp);
+    });
+    f.addEventListener('click', e => {
+      if (!hold.classList.contains('near')) return;                 // first tap/click brings the phone closer
+      e.stopPropagation();
+      const r = f.getBoundingClientRect();
+      openCat(f.dataset.cat, r.left + r.width / 2, r.top + r.height / 2);
+      setTimeout(zoomOut, 700);
+    });
+  });
+  // your icons as the decorative app glyphs
+  hold.querySelectorAll('.app.deco .tile, .dock .tile').forEach((t, i) => {
+    const b = bodies[(i * 7 + 3) % bodies.length];
+    if (b) t.style.backgroundImage = `url("${b.el.src}")`;
+  });
+  // bring the phone up so it fills the screen (hover on desktop, tap on phones)
+  const holdInner = hold.querySelector('.hold-inner');
+  let wantZoom = false;
+  function placeZoom() {
+    const h = hold.getBoundingClientRect();
+    const pw = h.width * 0.4445, phh = h.height * 0.3069;
+    const pcx = h.left + h.width * (0.2777 + 0.4445 / 2), pcy = h.top + h.height * (0.2744 + 0.3069 / 2);
+    const ox = h.left + h.width * 0.5, oy = h.top + h.height * 0.428;          // transform-origin
+    const ZOOM_FILL = 0.8;    // max share of the screen width the phone takes when zoomed
+    // fit into the space between the heading and the bottom of the section (or screen),
+    // so "Selected work" stays visible and nothing spills off the page
+    const sec = hold.closest('.work-sec').getBoundingClientRect();
+    const hint = hold.closest('.work-sec').querySelector('.hold-hint').getBoundingClientRect();
+    const top = Math.max(hint.bottom, 64) + 16;
+    const bottom = Math.min(innerHeight, sec.bottom) - 20;
+    if (bottom - top < phh * 1.4) {                 // not enough of the section on screen yet: stay at rest
+      ['--zx', '--zy', '--zs', '--tilt'].forEach(v => hold.style.removeProperty(v));
+      hold.classList.remove('near'); return;
+    }
+    const vw = page.clientWidth || innerWidth;
+    const s = Math.max(1.15, Math.min(vw * ZOOM_FILL / pw, (bottom - top) / phh));
+    const tx = vw / 2, ty = top + (bottom - top) / 2;
+    hold.style.setProperty('--zx', (tx - (ox + (pcx - ox) * s)) + 'px');
+    hold.style.setProperty('--zy', (ty - (oy + (pcy - oy) * s)) + 'px');
+    hold.style.setProperty('--zs', s.toFixed(3));
+    hold.style.setProperty('--tilt', '0deg');
+    hold.classList.add('near');
+  }
+  function zoomIn() { wantZoom = true; placeZoom(); }
+  function zoomOut() {
+    wantZoom = false;
+    if (!hold.classList.contains('near')) return;
+    ['--zx', '--zy', '--zs', '--tilt'].forEach(v => hold.style.removeProperty(v));
+    hold.classList.remove('near');
+  }
+  // hovering anywhere on the hands + phone zooms in (any mouse or trackpad, whatever the device says);
+  // moving off the full-screen phone zooms back out. Clicking or tapping also zooms in.
+  // zoom as soon as the mouse comes into the Selected work section; zoom out when it leaves
+  const workSec = hold.closest('.work-sec');
+  workSec.addEventListener('pointerenter', e => { if (e.pointerType !== 'touch') zoomIn(); });
+  workSec.addEventListener('pointerleave', e => { if (e.pointerType !== 'touch') zoomOut(); });
+  hold.addEventListener('click', zoomIn);
+  document.addEventListener('click', e => { if (isTouch && !hold.contains(e.target)) zoomOut(); });
+  let zRaf = 0;   // while zoomed, keep the phone placed as the page scrolls
+  page.addEventListener('scroll', () => {
+    if (zRaf) return;
+    zRaf = requestAnimationFrame(() => {
+      zRaf = 0;
+      if (!isTouch && pointer.active) {              // the section scrolled under a still mouse
+        const r = workSec.getBoundingClientRect();
+        const inside = pointer.x >= r.left && pointer.x <= r.right && pointer.y >= r.top && pointer.y <= r.bottom;
+        if (inside && !wantZoom) return zoomIn();
+        if (!inside && wantZoom) return zoomOut();
+      }
+      if (wantZoom) placeZoom();
+    });
+  }, { passive: true });
+  addEventListener('resize', () => { if (wantZoom) placeZoom(); });
+
+
+
+  /* ================================================================
+     PROJECTS — ScrollStack (React Bits), plain JS version
+     Cards pin near the top as you scroll; buried cards shrink and darken.
+     ================================================================ */
+  const STACK = {                  // same settings as the React Bits props
+    itemDistance: 100, itemStackDistance: 24, stackPosition: '15%',
+    itemScale: 0.05, baseScale: 0.8, dimAmount: 0.2, blurAmount: 0,
+    tiltAmount: 0, rotationAmount: 0, holdDistance: 200,
+  };
+  (function scrollStack(root, scroller, o) {
+    const inner = root.querySelector('.scroll-stack__inner');
+    const cards = [...inner.querySelectorAll('.scroll-stack-card')];
+    const resolve = (v, size) => typeof v === 'number' ? v : (String(v).trim().endsWith('%') ? parseFloat(v) / 100 * size : parseFloat(v) || 0);
+    const toLen = v => typeof v === 'number' ? v + 'px' : v;
+    // wrap each card in a sticky slot, with spacers between, exactly like the component
+    cards.forEach((card, i) => {
+      const slot = document.createElement('div');
+      slot.className = 'scroll-stack__slot'; slot.dataset.stackSlot = '';
+      slot.style.top = `calc(${toLen(o.stackPosition)} + ${i * o.itemStackDistance}px)`;
+      slot.style.marginBottom = (cards.length - 1 - i) * o.itemStackDistance + 'px';
+      slot.style.zIndex = i + 1;
+      card.replaceWith(slot); slot.appendChild(card);
+      card.insertAdjacentHTML('beforeend', '<span class="scroll-stack-card__shade" aria-hidden="true"></span>');
+      if (i > 0) {
+        const gap = o.itemDistance - (cards.length - i) * o.itemStackDistance;
+        const sp = document.createElement('div'); sp.setAttribute('aria-hidden', 'true');
+        sp.style.height = Math.max(0, gap) + 'px'; sp.style.marginTop = Math.min(0, gap) + 'px';
+        slot.before(sp);
+      }
+    });
+    const end = document.createElement('div'); end.className = 'scroll-stack__end'; end.setAttribute('aria-hidden', 'true');
+    end.style.height = o.holdDistance + 'px'; inner.appendChild(end);
+    const slots = [...inner.querySelectorAll('[data-stack-slot]')];
+    let frame = 0;
+    function update() {
+      frame = 0;
+      if (!root.offsetParent && root.getClientRects().length === 0) return;
+      const viewHeight = scroller.clientHeight, viewTop = scroller.getBoundingClientRect().top;
+      const stackTop = resolve(o.stackPosition, viewHeight), off = o.itemStackDistance;
+      const heights = slots.map(s => s.offsetHeight), tops = slots.map(s => s.getBoundingClientRect().top);
+      const depths = slots.map(() => 0);
+      for (let j = 1; j < slots.length; j++) {
+        const pinBefore = viewTop + stackTop + (j - 1) * off, start = pinBefore + heights[j - 1];
+        const span = Math.max(1, start - pinBefore - off);
+        const cover = Math.min(1, Math.max(0, (start - tops[j]) / span));
+        for (let i = 0; i < j; i++) depths[i] += cover;
+      }
+      const dimStep = Math.min(Math.max(o.dimAmount, 0), 1);
+      slots.forEach((slot, i) => {
+        const card = slot.firstElementChild, depth = depths[i], lean = Math.min(depth, 1);
+        const scale = Math.max(Math.min(o.baseScale, 1), 1 - depth * o.itemScale);
+        const tilt = -lean * o.tiltAmount, turn = lean * o.rotationAmount * (i % 2 ? -1 : 1);
+        card.style.transform = depth < 0.0005 ? '' : `perspective(1200px) rotateX(${tilt.toFixed(2)}deg) rotate(${turn.toFixed(2)}deg) scale(${scale.toFixed(4)})`;
+        card.style.filter = depth * o.blurAmount > 0.01 ? `blur(${(depth * o.blurAmount).toFixed(2)}px)` : '';
+        card.style.setProperty('--scroll-stack-dim', (1 - Math.pow(1 - dimStep, depth)).toFixed(3));
+      });
+    }
+    const schedule = () => { if (!frame) frame = requestAnimationFrame(update); };
+    scroller.addEventListener('scroll', schedule, { passive: true });
+    addEventListener('resize', schedule);
+    new ResizeObserver(schedule).observe(inner);
+    schedule();
+  })(document.getElementById('projStack'), document.getElementById('catView'), STACK);
+
+  // click a project card → its full write-up
+  const projView = document.getElementById('projView'), projBody = document.getElementById('projBody');
+  // contextual mockups carousel: arrows, drag, and a live counter
+  function initMockCarousel(root) {
+    root.querySelectorAll('.mock-carousel').forEach(car => {
+      const track = car.querySelector('.mock-track'), slides = [...track.children];
+      const count = car.querySelector('.mock-count'), [prevB, nextB] = car.querySelectorAll('.mock-btn');
+      const current = () => { const x = track.scrollLeft; let best = 0, d = Infinity; slides.forEach((sl, i) => { const dd = Math.abs(sl.offsetLeft - track.offsetLeft - x); if (dd < d) { d = dd; best = i; } }); return best; };
+      const update = () => {
+        const end = track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
+        const i = end ? slides.length - 1 : current();
+        count.textContent = (i + 1) + ' / ' + slides.length;
+        prevB.disabled = track.scrollLeft <= 4; nextB.disabled = end;
+      };
+      const go = dir => { const i = Math.max(0, Math.min(slides.length - 1, current() + dir)); track.scrollTo({ left: slides[i].offsetLeft - track.offsetLeft }); };
+      prevB.addEventListener('click', () => go(-1)); nextB.addEventListener('click', () => go(1));
+      track.addEventListener('keydown', e => { if (e.key === 'ArrowRight') { e.preventDefault(); go(1); } if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); } });
+      track.addEventListener('scroll', update, { passive: true });
+      // mouse drag (touch already scrolls natively)
+      let sx = 0, sl0 = 0, down = false, moved = false;
+      track.addEventListener('pointerdown', e => { if (e.pointerType !== 'mouse') return; down = true; moved = false; sx = e.clientX; sl0 = track.scrollLeft; });
+      addEventListener('pointermove', e => { if (!down) return; const dx = e.clientX - sx; if (Math.abs(dx) > 4) { moved = true; track.classList.add('dragging'); } track.scrollLeft = sl0 - dx; });
+      addEventListener('pointerup', () => { if (!down) return; down = false; if (moved) { track.classList.remove('dragging'); go(0); } });
+      requestAnimationFrame(update);
+      track.querySelectorAll('img').forEach(im => im.addEventListener('load', update));
+    });
+  }
+
+  // "Watch out, here comes my process documentation" slaps on like a sticker when it scrolls into view
+  const gapObs = new IntersectionObserver(entries => entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    const sp = e.target;
+    sp.style.setProperty('--tr', (-7 + Math.random() * 5).toFixed(1) + 'deg');
+    sp.classList.remove('slap'); void sp.offsetWidth; sp.classList.add('slap'); gapObs.unobserve(sp);
+  }), { root: projView, threshold: 0.6 });
+  function openProject(key) {
+    const tpl = document.getElementById('proj-' + key); if (!tpl) return;
+    projBody.replaceChildren(tpl.content.cloneNode(true));
+    projView.scrollTop = 0;
+    initMockCarousel(projBody);
+    armReveal(projBody, projView);
+    projBody.querySelectorAll('.type-tester').forEach(t => {   // start smaller on phones
+      const v = innerWidth < 600 ? 48 : 88, r = t.querySelector('.tt-range');
+      r.value = v; t.style.setProperty('--tt', v + 'px'); t.querySelector('.tt-size').textContent = v + 'px';
+    });
+    projBody.querySelectorAll('.process-gap span').forEach(sp => gapObs.observe(sp));
+    // the intro animation plays from the start every time the project opens
+    const intro = projBody.querySelector('.proj-intro');
+    if (intro) {
+      if (reduceMotion) { intro.poster = intro.dataset.end; intro.querySelectorAll('source').forEach(x => x.remove()); intro.load(); }   // just show the final logo
+      else { intro.load(); intro.play().catch(() => {}); }
+    }
+    projView.classList.add('open'); projView.setAttribute('aria-hidden', 'false');
+    projBody.querySelectorAll('video[autoplay]').forEach(v => { if (!reduceMotion) v.play().catch(() => {}); });
+    projView.focus({ preventScroll: true });
+  }
+  function closeProject() {
+    if (!projView.classList.contains('open')) return false;
+    projView.classList.remove('open'); projView.setAttribute('aria-hidden', 'true');
+    projBody.querySelectorAll('video').forEach(v => v.pause());
+    catView.focus({ preventScroll: true }); return true;
+  }
+  // Dart Frog type tester controls
+  projBody.addEventListener('input', e => {
+    if (!e.target.classList.contains('tt-range')) return;
+    const t = e.target.closest('.type-tester');
+    t.style.setProperty('--tt', e.target.value + 'px'); t.querySelector('.tt-size').textContent = e.target.value + 'px';
+  });
+  projBody.addEventListener('click', e => {
+    const t = e.target.closest('.type-tester'); if (!t) return;
+    if (e.target.closest('.tt-invert')) t.classList.toggle('inverted');
+    if (e.target.closest('.tt-reset')) {
+      const r = t.querySelector('.tt-range'), v = innerWidth < 600 ? 48 : 88; r.value = v; t.style.setProperty('--tt', v + 'px'); t.querySelector('.tt-size').textContent = v + 'px';
+      t.classList.remove('inverted'); t.querySelector('.tt-input').value = 'unleash your pattern';
+    }
+  });
+  // sticker sheet: click to flip between the two sets
+  projBody.addEventListener('click', e => {
+    const f = e.target.closest('.sticker-flip'); if (!f) return;
+    const on = f.classList.toggle('flipped');
+    const w = f.parentElement.querySelector('.flip-hint .which');
+    if (w) w.textContent = on ? 'Bloom Buddies \u00b7 2 of 2' : 'Brave Buddies \u00b7 1 of 2';
+  });
+  document.querySelectorAll('.proj-card').forEach(c => c.addEventListener('click', () => openProject(c.dataset.project)));
+  document.getElementById('projBack').addEventListener('click', closeProject);
+  addEventListener('keydown', e => { if (e.key === 'Escape' && projView.classList.contains('open')) { e.stopImmediatePropagation(); closeProject(); } }, true);
+
+  // buttons & nav links
+  document.getElementById('scrollCue').addEventListener('click', () => openPage());
+  document.querySelectorAll('[data-go]').forEach(a => a.addEventListener('click', e => {
+    e.preventDefault();
+    closeCat();
+    const id = a.dataset.go;
+    if (mode === 'page') {
+      const el = document.getElementById(id);
+      page.scrollTo({ top: el.offsetTop, behavior: reduceMotion ? 'auto' : 'smooth' });
+    } else openPage(id);
+  }));
+  document.getElementById('logo').addEventListener('click', e => { e.preventDefault(); closeCat(); closePoster(); exitPage(); });
+
+  function updateBubble(dt, now) {
+    const idle = now - lastInput;
+    // let go past 40% and it finishes blowing; below that it slowly deflates
+    if (idle > 450 && target > 0.4 && target < 1) target = Math.min(1, target + dt * 1.2);
+    if (idle > 1500 && target <= 0.4 && target > 0) target = Math.max(0, target - dt * 0.3);
+
+    prog += (target - prog) * (1 - Math.exp(-BUBBLE_EASE * dt));
+    if (Math.abs(target - prog) < 0.0005) prog = target;
+
+    const hr = home.getBoundingClientRect(), pr = portraitEl.getBoundingClientRect();
+    const mx = pr.left - hr.left + pr.width * MOUTH_X, my = pr.top - hr.top + pr.height * MOUTH_Y;
+    const lip = pr.width * 0.1;
+
+    // Starts as a small bubble on the lips, swells, then drifts to the middle as it fills the screen
+    const grow = smooth(0, 0.35, prog), fill = Math.pow(clamp01((prog - 0.22) / 0.78), 2.2);
+    const k = smooth(0.35, 1, prog);
+    const by = my + lip * 0.6 * grow;
+    const cx = mx + (W / 2 - mx) * k;
+    const cy = by + (H / 2 - by) * k;
+    const R = Math.hypot(W / 2, H / 2) * 1.04;
+    const r0 = lip * 1.9 * grow;
+    const r = prog <= 0.0005 ? 0 : r0 + (R - r0) * fill;
+    // a gentle wobble while it's being blown, like real gum
+    const wob = reduceMotion ? 0 : Math.sin(now / 160) * 0.012 * (1 - fill) * grow;
+    const rx = r * (1 + wob), ry = r * (1 - wob);
+    B.x = cx; B.y = cy; B.r = r;
+
+    page.style.clipPath = `ellipse(${rx.toFixed(1)}px ${ry.toFixed(1)}px at ${cx.toFixed(1)}px ${cy.toFixed(1)}px)`;
+    shine.style.setProperty('--gx', (rx - cx).toFixed(1) + 'px');   // keep the grain still on screen
+    shine.style.setProperty('--gy', (ry - cy).toFixed(1) + 'px');
+    Object.assign(shine.style, {
+      width: (2 * rx).toFixed(1) + 'px', height: (2 * ry).toFixed(1) + 'px',
+      transform: `translate(${(cx - rx).toFixed(1)}px, ${(cy - ry).toFixed(1)}px)`,
+      opacity: r > 0 ? (1 - smooth(0.86, 0.99, prog)).toFixed(3) : 0,
+    });
+    pageInner.style.opacity = smooth(0.8, 0.99, prog).toFixed(3);
+    layer.style.opacity = (1 - smooth(0.7, 0.97, prog)).toFixed(3);   // icons fade as the bubble takes over
+
+    if (target >= 1 && prog > 0.995) enterPage();
+  }
+
+  /* ================================================================
+     ANIMATION LOOP
+     ================================================================ */
+  let last = performance.now(), t = 0;
+  function frame(now) {
+    const dt = Math.min((now - last) / 1000, 0.05); last = now;
+    t += dt;
+    if (mode === 'home') { updateBubble(dt, now); updateEyes(); stepIcons(dt); }   // icons rest once you're inside
+    requestAnimationFrame(frame);
+  }
+
+  // text inside the page that icons should float around (re-measured as you scroll)
+  let pageZones = [], zonesAt = 0;
+  const PAGE_TEXT = '.intro .label, .intro h2, .intro p, .intro .btn, .featured-row, .section-head, .meta, .step, .contact h2, .contact .label, .email, footer .wrap';
+  function measurePageZones() {
+    const hr = home.getBoundingClientRect();
+    pageZones = [];
+    page.querySelectorAll(PAGE_TEXT).forEach(el => {
+      const r = el.getBoundingClientRect();
+      if (r.bottom < hr.top || r.top > hr.bottom || !r.width) return;
+      pageZones.push({ x: r.left - hr.left - 8, y: r.top - hr.top - 8, w: r.width + 16, h: r.height + 16 });
+    });
+  }
+
+  function stepIcons(dt) {
+    if (mode === 'page' && performance.now() - zonesAt > 150) { measurePageZones(); zonesAt = performance.now(); }
+    const hr = home.getBoundingClientRect();
+    const px = pointer.x - hr.left, py = pointer.y - hr.top;
+    const ease = 1 - Math.exp(-FRICTION * dt);
+    const calm = Math.exp(-10 * dt);
+    pointer.vx *= calm; pointer.vy *= calm;
+
+    // burst out of the head, one after another
+    for (const b of bodies) {
+      if (!b.hidden && !b.born && t >= b.delay) {
+        b.born = true; b.el.style.opacity = 1;
+        const burst = BURST_SPEED * (0.75 + rand() * 0.5);
+        b.vx = Math.cos(b.spawnA) * burst; b.vy = Math.sin(b.spawnA) * burst; b.heading = b.spawnA;
+      }
+    }
+    const live = bodies.filter(b => !b.hidden && b.born);
+
+    for (const b of live) {
+      if (homeGravity) {                            // fallen: drop and settle on the bottom
+        b.vy += 2200 * dt;
+        if (b.y > H - b.r * 1.2) b.vx *= Math.exp(-5 * dt);
+      } else {
+        const drift = reduceMotion ? 0 : DRIFT_SPEED * b.pace;
+        if (!reduceMotion) b.heading += Math.sin(t * 0.25 + b.wobble) * 0.5 * dt;
+        b.vx += (Math.cos(b.heading) * drift - b.vx) * ease;
+        b.vy += (Math.sin(b.heading) * drift - b.vy) * ease;
+      }
+
+      // cursor pushes and flings
+      if (pointer.active) {
+        const dx = b.x - px, dy = b.y - py, d = Math.hypot(dx, dy) || 1;
+        const reach = PUSH_RADIUS + b.r;
+        if (d < reach) {
+          const f = 1 - d / reach;
+          b.vx += (dx / d * PUSH_STRENGTH * f) * dt + pointer.vx * FLING * f * dt * 8;
+          b.vy += (dy / d * PUSH_STRENGTH * f) * dt + pointer.vy * FLING * f * dt * 8;
+          b.heading = Math.atan2(b.vy, b.vx);
+        }
+      }
+
+      // the growing bubble shoves icons out of its way
+      if (mode === 'home' && B.r > 0 && B.r < Math.min(W, H) * 0.45) {
+        const dx = b.x - B.x, dy = b.y - B.y, d = Math.hypot(dx, dy) || 1;
+        const reach = B.r + b.r * 0.6;
+        if (d < reach) {
+          const f = (1 - d / reach) * 4000 * dt + 200 * dt;
+          b.vx += dx / d * f; b.vy += dy / d * f; b.heading = Math.atan2(dy, dx);
+        }
+      }
+
+      // float around the head, not over it (once they've popped out)
+      if (AVOID_HEAD && b.grow >= 1) {
+        const depth = ovalDepth(b.x, b.y, b.r * 0.5);
+        if (depth < 1) {
+          const dx = b.x - P.cx, dy = b.y - P.cy, d = Math.hypot(dx, dy) || 1;
+          const f = (1 - depth) * 900 * dt;
+          b.vx += dx / d * f; b.vy += dy / d * f;
+          b.heading = Math.atan2(dy, dx) + Math.sin(b.wobble) * 0.8;
+        }
+      }
+
+      // keep clear of text (the big hello text at home, headings and paragraphs in the page)
+      if (!homeGravity && mode !== 'home') for (const z of pageZones) {
+        const nx = Math.max(z.x, Math.min(b.x, z.x + z.w)), ny = Math.max(z.y, Math.min(b.y, z.y + z.h));
+        const dx = b.x - nx, dy = b.y - ny, d = Math.hypot(dx, dy);
+        if (d < b.r) {
+          const ux = d ? dx / d : b.x - (z.x + z.w / 2), uy = d ? dy / d : b.y - (z.y + z.h / 2);
+          const ul = Math.hypot(ux, uy) || 1;
+          b.vx += ux / ul * 700 * dt; b.vy += uy / ul * 700 * dt;
+          b.heading = Math.atan2(uy, ux);
+        }
+      }
+
+      // soft bounce off the sides; top and bottom too on the home screen
+      const m = b.r * 0.4;
+      if (b.x < m && b.vx < 0)     { b.vx *= -0.8; b.heading = Math.PI - b.heading; }
+      if (b.x > W - m && b.vx > 0) { b.vx *= -0.8; b.heading = Math.PI - b.heading; }
+      if (homeGravity) {
+        if (b.y > H - b.r && b.vy > 0) { b.vy *= -0.28; b.y = H - b.r; }        // land with a little bounce
+      } else if (mode === 'home') {
+        if (b.y < m && b.vy < 0)     { b.vy *= -0.8; b.heading = -b.heading; }
+        if (b.y > H - m && b.vy > 0) { b.vy *= -0.8; b.heading = -b.heading; }
+      }
+    }
+    if (homeGravity) {                              // pile up instead of sinking into each other
+      for (let i = 0; i < live.length; i++) for (let j = i + 1; j < live.length; j++) {
+        const a = live[i], c = live[j], dx = c.x - a.x, dy = c.y - a.y, d = Math.hypot(dx, dy) || 1, min = (a.r + c.r) * 0.8;
+        if (d < min) { const push = (min - d) / 2, ux = dx / d, uy = dy / d; a.x -= ux * push; a.y -= uy * push; c.x += ux * push; c.y += uy * push; }
+      }
+    }
+
+    // icons nudge each other apart
+    for (let i = 0; i < live.length; i++) {
+      for (let j = i + 1; j < live.length; j++) {
+        const a = live[i], c = live[j];
+        const dx = c.x - a.x, dy = c.y - a.y, d = Math.hypot(dx, dy) || 1;
+        const min = (a.r + c.r) * 0.85;
+        if (d < min) {
+          const f = (min - d) * 30 * dt, fx = dx / d * f, fy = dy / d * f;
+          a.vx -= fx; a.vy -= fy; c.vx += fx; c.vy += fy;
+        }
+      }
+    }
+
+    for (const b of live) {
+      b.x += b.vx * dt; b.y += b.vy * dt;
+      b.x = Math.min(Math.max(b.x, -b.r), W + b.r);
+      if (mode === 'home') b.y = Math.min(Math.max(b.y, -b.r), H + b.r);
+      else {                                       // inside the page: drift off one edge, come back the other
+        if (b.y < -b.r * 1.2) b.y += H + b.r * 2.4;
+        else if (b.y > H + b.r * 1.2) b.y -= H + b.r * 2.4;
+      }
+
+      b.rot += (b.spin * (homeGravity ? 0.2 : 1) + b.vx * (homeGravity ? 0.6 : 0.15)) * dt;
+      b.grow = Math.min(1, b.grow + dt * 1.6);
+      const sc = 0.3 + 0.7 * (1 - Math.pow(1 - b.grow, 3));
+      b.el.style.transform = `translate3d(${(b.x - b.w / 2).toFixed(1)}px, ${(b.y - b.h / 2).toFixed(1)}px, 0) rotate(${b.rot.toFixed(1)}deg) scale(${sc.toFixed(3)})`;
+    }
+  }
+
+  // click anywhere on the homepage (not a link or button) to drop the icons / float them again
+  let homeGravity = false;
+  home.addEventListener('click', e => {
+    if (mode !== 'home' || e.target.closest('a, button')) return;
+    homeGravity = !homeGravity;
+    if (!homeGravity) bodies.forEach(b => {         // float back up with a little jump
+      b.vy = -(420 + Math.random() * 480); b.vx = (Math.random() - 0.5) * 320;
+      b.heading = -Math.PI / 2 + (Math.random() - 0.5) * 1.4;
+    });
+  });
+
+  let resizeTimer;
+  addEventListener('resize', () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(layout, 120); });
+  if (document.fonts) document.fonts.ready.then(layout);
+  layout();
+  requestAnimationFrame(frame);
+
+  /* ================================================================
+     WORD THAT CHANGES TYPEFACE (inside the bubble)
+     ================================================================ */
+  const shift = document.getElementById('shift');
+  const word = shift.firstElementChild;
+  const STYLE_SPEED = 550;   // milliseconds between font changes (smaller = faster)
+  const looks = [
+    { font: '"Bricolage Grotesque", sans-serif', style: 'normal', weight: 800 },
+    { font: '"Fraunces", serif',                 style: 'italic', weight: 600 },
+    { font: '"Space Mono", monospace',           style: 'normal', weight: 700 },
+    { font: '"Rubik Mono One", sans-serif',      style: 'normal', weight: 400 },
+    { font: '"Caveat", cursive',                 style: 'normal', weight: 700 },
+    { font: '"Syne", sans-serif',                style: 'normal', weight: 800 },
+    { font: '"DM Serif Display", serif',         style: 'italic', weight: 400 },
+    { font: '"Bungee", sans-serif',              style: 'normal', weight: 400 },
+    { font: '"Pacifico", cursive',               style: 'normal', weight: 400 },
+  ];
+  function setLook(l) {
+    Object.assign(word.style, { fontFamily: l.font, fontStyle: l.style, fontWeight: l.weight, fontSize: '1em' });
+    // shrink or grow each font so the word always fills the same slot
+    const fit = shift.clientWidth / (word.getBoundingClientRect().width || 1);
+    word.style.fontSize = Math.min(1.05, Math.max(0.6, fit)).toFixed(3) + 'em';
+  }
+  if (!reduceMotion) {
+    let i = 0;
+    const start = () => setInterval(() => { i = (i + 1) % looks.length; setLook(looks[i]); }, STYLE_SPEED);
+    // load every font first so each one is measured correctly
+    const ready = document.fonts
+      ? Promise.all(looks.map(l => document.fonts.load(`${l.style} ${l.weight} 40px ${l.font}`).catch(() => {})))
+      : Promise.resolve();
+    ready.then(() => { setLook(looks[0]); start(); });
+  }
+
+  /* ================================================================
+     STICKERS — slap onto the blue page every time you land inside the bubble
+     Each entry: [file number, width, height]. Remove numbers to leave one out.
+     ================================================================ */
+  const STICKERS = [[1,172,115],[2,181,108],[3,113,113],[4,173,118],[5,107,105],[6,120,120],[7,241,96],[8,212,97],[9,90,89],[10,186,109],[11,158,112],[12,237,77],[13,104,104],[14,93,63],[15,87,54],[16,92,92],[17,120,92],[18,37,41]];
+  const STICKER_SCALE = 1.1;    // sticker size — smaller number = smaller stickers
+  const SLAP_GAP      = 0.11;   // seconds between each sticker landing
+  const blueEl = document.getElementById('intro');
+  const stickerLayer = document.getElementById('stickers');
+
+  function slapStickers() {
+    stickerLayer.innerHTML = '';                 // fresh arrangement each time
+    const ar = blueEl.getBoundingClientRect();
+    const Wa = ar.width, Ha = ar.height;
+    const k = STICKER_SCALE * Math.min(1, Math.max(0.7, Wa / 1300));
+    // words to keep clear of
+    const avoid = [...blueEl.querySelectorAll('.label, h2, .lede, .btn, .featured-row > *')].map(el => {
+      const r = el.getBoundingClientRect();
+      return { x: r.left - ar.left - 14, y: r.top - ar.top - 14, w: r.width + 28, h: r.height + 28 };
+    });
+    const placed = [];
+    const order = STICKERS.slice().sort(() => Math.random() - 0.5);   // new arrangement every visit
+    order.forEach(([n, w0, h0]) => {
+      const w = w0 * k, h = h0 * k;
+      let spot = null;
+      for (let tries = 0; tries < 300 && !spot; tries++) {
+        const x = 12 + Math.random() * (Wa - w - 24), y = 12 + Math.random() * (Ha - h - 24);
+        const hitsText = avoid.some(a => x < a.x + a.w && x + w > a.x && y < a.y + a.h && y + h > a.y);
+        if (hitsText) continue;
+        // stickers may overlap a little, like a real sticker pile, but not a lot
+        const crowded = placed.some(p => {
+          const ox = Math.max(0, Math.min(x + w, p.x + p.w) - Math.max(x, p.x));
+          const oy = Math.max(0, Math.min(y + h, p.y + p.h) - Math.max(y, p.y));
+          return ox * oy > 0.18 * Math.min(w * h, p.w * p.h);
+        });
+        if (!crowded) spot = { x, y, w, h };
+      }
+      if (!spot) return;                          // no room on small screens: skip it
+      placed.push(spot);
+      const src = `assets/stickers/sticker-${String(n).padStart(2, '0')}.png`;
+      const el = document.createElement('div');
+      el.className = 'sticker'; el.style.width = Math.round(w) + 'px';
+      el.innerHTML = `<img src="${src}" alt=""><span class="gloss"></span>`;
+      el.querySelector('.gloss').style.webkitMaskImage = el.querySelector('.gloss').style.maskImage = `url("${src}")`;
+      el.style.setProperty('--x', spot.x.toFixed(0) + 'px');
+      el.style.setProperty('--y', spot.y.toFixed(0) + 'px');
+      el.style.setProperty('--r', ((Math.random() - 0.5) * 26).toFixed(1) + 'deg');
+      el.style.setProperty('--d', (placed.length * SLAP_GAP).toFixed(2) + 's');
+      stickerLayer.appendChild(el);
+      el.addEventListener('animationend', e => { if (e.animationName === 'slap') el.classList.add('settled'); });
+      requestAnimationFrame(() => el.classList.add(reduceMotion ? 'settled' : 'stuck'));
+    });
+    // unlock scrolling once the last sticker has landed
+    clearTimeout(slapStickers.unlock);
+    slapStickers.unlock = setTimeout(() => page.classList.remove('locked'),
+      reduceMotion ? 0 : (placed.length * SLAP_GAP + 0.65) * 1000);
+  }
+
+
+  /* "How I work" ribbon: the words repeat and slide along the looping ribbon */
+  (function () {
+    const tp = document.getElementById('ribbonText'), path = document.getElementById('ribbonPath');
+    if (!tp) return;
+    const UNIT = 'how I work  \u2726  discover  \u2726  define  \u2726  develop  \u2726  deliver  \u2726  ';
+    const len = path.getTotalLength();
+    let unitW = 600;
+    function fill() {
+      tp.textContent = UNIT; unitW = tp.getComputedTextLength() || 600;
+      tp.textContent = UNIT.repeat(Math.ceil(len / unitW) + 2);
+    }
+    fill(); if (document.fonts) document.fonts.ready.then(fill);
+    if (reduceMotion) return;
+    let off = 0, last = performance.now();
+    (function tick(now) {
+      off = (off + (now - last) * 0.05) % unitW; last = now;
+      tp.setAttribute('startOffset', -off);
+      requestAnimationFrame(tick);
+    })(last);
+  })();
+  // contact: copy-email pill
+  document.querySelectorAll('[data-copy]').forEach(b => b.addEventListener('click', async () => {
+    const lab = b.querySelector('.copy-label');
+    try { await navigator.clipboard.writeText(b.dataset.copy); lab.textContent = 'copied!'; }
+    catch { lab.textContent = b.dataset.copy; }
+    setTimeout(() => lab.textContent = 'my email', 1800);
+  }));
+  // Behance link (one place to change it)
+  const BEHANCE_URL = 'https://www.behance.net/keelyboland1';
+  document.querySelectorAll('[data-behance]').forEach(a => a.href = BEHANCE_URL);
+  /* Fade-in as you scroll inside the page */
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { root: page, threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  /* Text reveal — every heading, paragraph, label and list item fades up as it scrolls into view */
+  const REVEAL_SEL = 'h1, h2, h3, h4, p, li, figcaption, blockquote, .label, .proj-link';
+  const REVEAL_SKIP = '.process-gap, .type-tester, nav, .home, .scroll-stack, .cat-head h2, button, .reveal, .poster-float, #posterCarousel, .resume-view, .flip-hint';
+  const revealObs = new Map();
+  function armReveal(container, root) {
+    if (!container) return;
+    let obs = revealObs.get(root);
+    if (!obs) {
+      obs = new IntersectionObserver(entries => {
+        let n = 0;
+        entries.forEach(e => {
+          if (!e.isIntersecting) return;
+          e.target.style.transitionDelay = Math.min(n++, 6) * 70 + 'ms';
+          e.target.classList.add('in'); obs.unobserve(e.target);
+        });
+      }, { root, threshold: 0.12, rootMargin: '0px 0px -5% 0px' });
+      revealObs.set(root, obs);
+    }
+    container.querySelectorAll(REVEAL_SEL).forEach(el => {
+      if (el.closest(REVEAL_SKIP)) return;
+      if (el.parentElement && el.parentElement.closest('.reveal-t')) return;          // already covered by a parent
+      if (!el.classList.contains('reveal-t')) {
+        const cs = getComputedStyle(el);
+        if (cs.animationName !== 'none' || cs.transform !== 'none' || cs.display === 'none') return;   // keep text that has its own motion
+        el.classList.add('reveal-t');
+      }
+      el.classList.remove('in'); el.style.transitionDelay = '';
+      obs.unobserve(el); void el.offsetWidth; obs.observe(el);
+    });
+  }
+  </script>
+</body>
+</html>
